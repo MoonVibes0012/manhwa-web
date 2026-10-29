@@ -119,6 +119,12 @@ header p {
     line-height: 1.5;
 }
 
+.card-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
 .btn-read {
     display: inline-block;
     background-color: var(--accent);
@@ -139,12 +145,43 @@ header p {
     text-decoration: none !important;
 }
 
+.btn-secondary {
+    display: inline-block;
+    background-color: transparent;
+    color: var(--text-main) !important;
+    text-align: center;
+    padding: 12px 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    text-decoration: none !important;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: var(--accent);
+}
+
 /* Reader specific styles - True Webtoon style */
 body.reader-body {
     background-color: #000000;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+}
+
+/* Progress Bar */
+#progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background-color: var(--accent);
+    width: 0%;
+    z-index: 9999;
+    transition: width 0.1s ease-out;
 }
 
 .sticky-nav {
@@ -187,7 +224,7 @@ body.reader-body {
     display: flex;
     flex-direction: column;
     background-color: #000000;
-    padding: 0;
+    padding: 0 0 50px 0;
 }
 
 .manhwa-page {
@@ -197,4 +234,126 @@ body.reader-body {
     margin: 0;
     padding: 0;
     border: none;
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out;
+}
+
+.manhwa-page.loaded {
+    opacity: 1;
+}
+
+/* Chapter Navigation at bottom */
+.chapter-navigation {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 40px 20px;
+    background-color: var(--bg-card);
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+}
+
+.btn-chapter {
+    flex: 1;
+    background-color: var(--bg-main);
+    color: var(--text-main) !important;
+    text-align: center;
+    padding: 14px 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none !important;
+    transition: all 0.2s ease;
+}
+
+.btn-chapter:hover {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: #ffffff !important;
+}
+
+/* Back to Top Floating Button */
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: var(--bg-card);
+    color: var(--text-main);
+    border: 1px solid var(--border);
+    padding: 12px 16px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.back-to-top:hover {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: #ffffff;
+    transform: translateY(-3px);
+}
+
+/* Archive Page Styling */
+.archive-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.chapter-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.chapter-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 20px 24px;
+    border-radius: 14px;
+    text-decoration: none !important;
+    color: var(--text-main) !important;
+    transition: all 0.2s ease;
+}
+
+.chapter-item:hover {
+    border-color: var(--accent);
+    transform: translateX(6px);
+    background-color: rgba(255, 87, 34, 0.03);
+}
+
+.ch-number {
+    font-weight: 600;
+    color: var(--accent);
+    font-size: 1.05rem;
+    min-width: 100px;
+}
+
+.ch-title {
+    flex-grow: 1;
+    font-weight: 500;
+    color: var(--text-main);
+    font-size: 1rem;
+}
+
+.ch-date {
+    font-size: 0.85rem;
+    color: var(--text-muted);
 }

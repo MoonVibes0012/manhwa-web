@@ -8,15 +8,62 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body class="reader-body">
+    <div id="progress-bar"></div>
+
     <nav class="sticky-nav">
         <a href="index.html">← Kembali</a>
         <span class="chapter-title-nav">Chapter 1</span>
     </nav>
 
     <div class="reader-container" id="manhwaContainer">
-        <img src="images/chapter-1/01.jpg" alt="Page 1" class="manhwa-page">
-        <img src="images/chapter-1/02.jpg" alt="Page 2" class="manhwa-page">
-        <img src="images/chapter-1/03.jpg" alt="Page 3" class="manhwa-page">
+        <img src="images/chapter-1/01.jpg" alt="Page 1" class="manhwa-page" loading="lazy">
+        <img src="images/chapter-1/02.jpg" alt="Page 2" class="manhwa-page" loading="lazy">
+        <img src="images/chapter-1/03.jpg" alt="Page 3" class="manhwa-page" loading="lazy">
+        
+        <div class="chapter-navigation">
+            <a href="#" class="btn-chapter prev-chapter">⬅️ Previous Chapter</a>
+            <a href="#" class="btn-chapter next-chapter">Next Chapter ➡️</a>
+        </div>
     </div>
+
+    <button id="backToTop" class="back-to-top" title="Back to Top">⬆️ Back to Top</button>
+
+    <script>
+        // Progress bar scroll listener
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progress-bar').style.width = scrolled + '%';
+        });
+
+        // Image fade-in effect on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const images = document.querySelectorAll('.manhwa-page');
+            images.forEach(img => {
+                if (img.complete) {
+                    img.classList.add('loaded');
+                } else {
+                    img.addEventListener('load', () => {
+                        img.classList.add('loaded');
+                    });
+                }
+            });
+
+            // Back to Top button
+            const backToTopBtn = document.getElementById('backToTop');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
 </body>
 </html>
