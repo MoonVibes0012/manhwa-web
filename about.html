@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tentang Kami - Perpustakaan Manhwa</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <button id="themeToggle" class="theme-toggle-btn" title="Toggle Light/Dark Mode">🌙</button>
+
+    <nav class="sticky-nav">
+        <a href="index.html">← Beranda</a>
+        <span class="chapter-title-nav">Tentang Website</span>
+        <a href="about.html" style="color: var(--accent) !important;">About</a>
+    </nav>
+
+    <div class="container" style="max-width: 800px; margin: 40px auto;">
+        <header>
+            <h1>Tentang Perpustakaan Manhwa</h1>
+            <p>Platform membaca komik webtoon modern dengan pengalaman terbaik.</p>
+        </header>
+
+        <main style="background-color: var(--bg-card); border: 1px solid var(--border); padding: 30px; border-radius: 16px; line-height: 1.8;">
+            <h2 style="color: var(--accent); margin-top: 0;">Visi & Misi</h2>
+            <p>Perpustakaan Manhwa hadir untuk memberikan kenyamanan maksimal bagi para pecinta komik webtoon di Indonesia. Dilengkapi dengan fitur-fitur modern seperti pembaca webtoon, mode gelap/terang (Light/Dark Mode), riwayat bacaan otomatis (bookmark), navigasi keyboard, mode auto-scroll, hingga dukungan penuh PWA agar dapat diakses secara offline.</p>
+            
+            <h3 style="margin-top: 30px;">Kontak & Media Sosial</h3>
+            <p style="color: var(--text-muted);">Punya pertanyaan, kritik, atau saran? Hubungi kami melalui:</p>
+            <ul style="color: var(--text-muted); padding-left: 20px;">
+                <li>Email: support@manhwaweb.example</li>
+                <li>Telegram: @manhwaweb_official</li>
+                <li>GitHub: github.com/MoonVibes0012/manhwa-web</li>
+            </ul>
+
+            <div style="margin-top: 30px; text-align: center;">
+                <a href="index.html" class="btn-read" style="display: inline-block; padding: 12px 24px;">← Kembali ke Beranda</a>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Smooth Page Transition Fade-In
+        window.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.add('fade-in');
+        });
+
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').catch(err => console.log('SW registration failed:', err));
+            });
+        }
+
+        // Light/Dark Mode Script
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+
+        if (currentTheme === 'light') {
+            document.body.classList.add('light-mode');
+            themeToggleBtn.textContent = '☀️';
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            themeToggleBtn.textContent = isLight ? '☀️' : '🌙';
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        });
+    </script>
+</body>
+</html>

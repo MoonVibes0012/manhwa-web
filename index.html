@@ -20,6 +20,10 @@
 <body>
     <button id="themeToggle" class="theme-toggle-btn" title="Toggle Light/Dark Mode">🌙</button>
 
+    <div style="position: absolute; top: 20px; left: 20px; z-index: 2000;">
+        <a href="about.html" class="btn-secondary" style="padding: 10px 16px; font-size: 0.9rem;">About</a>
+    </div>
+
     <div class="container">
         <header>
             <h1>Perpustakaan Manhwa</h1>
@@ -39,6 +43,13 @@
         window.addEventListener('DOMContentLoaded', () => {
             document.body.classList.add('fade-in');
         });
+
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').catch(err => console.log('SW registration failed:', err));
+            });
+        }
 
         // Light/Dark Mode Script
         const themeToggleBtn = document.getElementById('themeToggle');

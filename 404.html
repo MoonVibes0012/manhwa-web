@@ -27,6 +27,13 @@
             document.body.classList.add('fade-in');
         });
 
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').catch(err => console.log('SW registration failed:', err));
+            });
+        }
+
         // Light/Dark Mode Script
         const themeToggleBtn = document.getElementById('themeToggle');
         const currentTheme = localStorage.getItem('theme') || 'dark';

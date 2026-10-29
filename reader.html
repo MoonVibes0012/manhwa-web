@@ -15,17 +15,23 @@
     <div id="progress-bar"></div>
 
     <nav class="sticky-nav">
-        <a href="index.html">← Kembali</a>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <a href="index.html">← Kembali</a>
+            <a href="about.html" style="font-size: 0.9rem; color: var(--text-muted) !important;">About</a>
+        </div>
         <span class="chapter-title-nav" id="chapterTitleNav">Chapter 1</span>
         <button id="themeToggle" class="theme-toggle-btn" style="position:static; margin-left: auto;" title="Toggle Light/Dark Mode">🌙</button>
     </nav>
 
-    <!-- Reader Settings Toolbar (Sempit, Normal, Lebar) -->
+    <!-- Reader Settings Toolbar (Sempit, Normal, Lebar, Auto-Scroll) -->
     <div class="reader-settings-bar">
-        <span>Lebar Gambar:</span>
+        <span>Lebar:</span>
         <button class="btn-setting" data-width="narrow">Sempit</button>
         <button class="btn-setting active" data-width="normal">Normal</button>
         <button class="btn-setting" data-width="wide">Lebar</button>
+        <span style="margin-left: 10px; border-left: 1px solid var(--border); padding-left: 10px;">
+            <button id="autoScrollBtn" class="btn-setting" style="background-color: var(--accent); color: #fff; font-weight: 600;">▶️ Auto-Scroll</button>
+        </span>
     </div>
 
     <div class="reader-container normal" id="manhwaContainer">
@@ -60,6 +66,13 @@
             document.body.classList.add('fade-in');
         });
 
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').catch(err => console.log('SW registration failed:', err));
+            });
+        }
+
         // Determine current chapter number from URL query params
         const urlParams = new URLSearchParams(window.location.search);
         let chNum = parseInt(urlParams.get('chapter')) || 1;
@@ -93,6 +106,33 @@
             }
         });
 
+        // Auto-Scroll Mode Implementation
+        const autoScrollBtn = document.getElementById('autoScrollBtn');
+        let scrollInterval = null;
+        let isAutoScrolling = false;
+
+        autoScrollBtn.addEventListener('click', () => {
+            if (isAutoScrolling) {
+                clearInterval(scrollInterval);
+                scrollInterval = null;
+                isAutoScrolling = false;
+                autoScrollBtn.textContent = '▶️ Auto-Scroll';
+            } else {
+                isAutoScrolling = true;
+                autoScrollBtn.textContent = '⏸️ Pause';
+                scrollInterval = setInterval(() => {
+                    window.scrollBy({ top: 2, behavior: 'smooth' });
+                    // Stop if reached bottom
+                    if ((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight - 5) {
+                        clearInterval(scrollInterval);
+                        scrollInterval = null;
+                        isAutoScrolling = false;
+                        autoScrollBtn.textContent = '▶️ Auto-Scroll';
+                    }
+                }, 50);
+            }
+        });
+
         // Share Button (Web Share API + Fallback)
         const shareBtn = document.getElementById('shareBtn');
         shareBtn.addEventListener('click', async () => {
@@ -120,7 +160,7 @@
 
         // Reader Settings (Width control)
         const container = document.getElementById('manhwaContainer');
-        const settingButtons = document.querySelectorAll('.btn-setting');
+        const settingButtons = document.querySelectorAll('.btn-setting[data-width]');
         const savedWidthMode = localStorage.getItem('reader_width_mode') || 'normal';
 
         function applyWidthMode(mode) {
@@ -197,7 +237,7 @@
                         img.classList.add('loaded');
                     });
                     img.addEventListener('error', () => {
-                        img.classList.add('loaded'); // fallback if image fails to load
+                        img.classList.add('loaded');
                     });
                 }
             });
