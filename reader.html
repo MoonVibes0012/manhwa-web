@@ -55,6 +55,11 @@
     </div>
 
     <script>
+        // Smooth Page Transition Fade-In
+        window.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.add('fade-in');
+        });
+
         // Determine current chapter number from URL query params
         const urlParams = new URLSearchParams(window.location.search);
         let chNum = parseInt(urlParams.get('chapter')) || 1;
@@ -181,7 +186,7 @@
             modal.classList.remove('show');
         });
 
-        // Image fade-in effect on load
+        // Image fade-in effect on load & Skeleton Loading handling
         document.addEventListener('DOMContentLoaded', () => {
             const images = document.querySelectorAll('.manhwa-page');
             images.forEach(img => {
@@ -190,6 +195,9 @@
                 } else {
                     img.addEventListener('load', () => {
                         img.classList.add('loaded');
+                    });
+                    img.addEventListener('error', () => {
+                        img.classList.add('loaded'); // fallback if image fails to load
                     });
                 }
             });

@@ -8,7 +8,7 @@
     --text-main: #f4f4f5;
     --text-muted: #a1a1aa;
     --border: #27272a;
-    --nav-bg: rgba(18, 18, 20, 0.9);
+    --nav-bg: rgba(18, 18, 20, 0.75);
 }
 
 body.light-mode {
@@ -19,11 +19,29 @@ body.light-mode {
     --text-main: #212529;
     --text-muted: #6c757d;
     --border: #dee2e6;
-    --nav-bg: rgba(255, 255, 255, 0.9);
+    --nav-bg: rgba(255, 255, 255, 0.75);
 }
 
 * {
     box-sizing: border-box;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-main);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #3f3f46;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
 }
 
 body {
@@ -33,7 +51,12 @@ body {
     color: var(--text-main);
     font-family: 'Poppins', sans-serif;
     min-height: 100vh;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    opacity: 0;
+    transition: background-color 0.3s ease, color 0.3s ease, opacity 0.5s ease-in-out;
+}
+
+body.fade-in {
+    opacity: 1;
 }
 
 a {
@@ -76,20 +99,21 @@ header p {
     gap: 30px;
 }
 
+/* Hover Card Animation */
 .manhwa-card {
     background-color: var(--bg-card);
     border-radius: 16px;
     overflow: hidden;
     border: 1px solid var(--border);
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+    transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
 }
 
 .manhwa-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
-    border-color: rgba(255, 87, 34, 0.4);
+    transform: translateY(-5px);
+    box-shadow: 0 14px 30px rgba(255, 87, 34, 0.15);
+    border-color: var(--accent);
 }
 
 .card-img-wrapper {
@@ -169,7 +193,7 @@ header p {
     text-decoration: none !important;
     font-weight: 500;
     font-size: 0.95rem;
-    transition: background-color 0.2s ease, border-color 0.2s ease;
+    transition: all 0.2s ease;
 }
 
 .btn-secondary:hover {
@@ -230,7 +254,7 @@ body.reader-body {
 }
 
 body.reader-body.light-mode {
-    background-color: #121214; /* keep reader dark for comfortable reading or follow theme */
+    background-color: #121214;
 }
 
 /* Progress Bar */
@@ -245,11 +269,13 @@ body.reader-body.light-mode {
     transition: width 0.1s ease-out;
 }
 
+/* Glassmorphism Navbar */
 .sticky-nav {
     position: sticky;
     top: 0;
     background: var(--nav-bg);
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border);
     padding: 15px 20px;
     display: flex;
@@ -288,6 +314,16 @@ body.reader-body.light-mode {
     padding: 0 0 50px 0;
 }
 
+/* Skeleton Loading & Image Fade-In */
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
 .manhwa-page {
     width: 100%;
     height: auto;
@@ -296,11 +332,18 @@ body.reader-body.light-mode {
     padding: 0;
     border: none;
     opacity: 0;
+    background: linear-gradient(90deg, #18181b 25%, #27272a 50%, #18181b 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
     transition: opacity 0.6s ease-in-out;
+    min-height: 800px;
 }
 
 .manhwa-page.loaded {
     opacity: 1;
+    background: none;
+    animation: none;
+    min-height: auto;
 }
 
 /* Chapter Navigation at bottom */
@@ -366,7 +409,7 @@ body.reader-body.light-mode {
     transform: translateY(-3px);
 }
 
-/* Archive Page Styling */
+/* Archive Page Styling with Hover Animation */
 .archive-container {
     max-width: 800px;
     margin: 0 auto;
@@ -391,12 +434,13 @@ body.reader-body.light-mode {
     border-radius: 14px;
     text-decoration: none !important;
     color: var(--text-main) !important;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
 }
 
 .chapter-item:hover {
     border-color: var(--accent);
-    transform: translateX(6px);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255, 87, 34, 0.12);
     background-color: rgba(255, 87, 34, 0.03);
 }
 
@@ -478,7 +522,6 @@ body.reader-body.light-mode {
 .modal-actions .btn-read, .modal-actions .btn-secondary {
     flex: 1;
 }
-
 
 /* Reader Settings Bar */
 .reader-settings-bar {

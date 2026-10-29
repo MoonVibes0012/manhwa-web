@@ -35,6 +35,11 @@
     </div>
 
     <script>
+        // Smooth Page Transition Fade-In
+        window.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.add('fade-in');
+        });
+
         // Light/Dark Mode Script
         const themeToggleBtn = document.getElementById('themeToggle');
         const currentTheme = localStorage.getItem('theme') || 'dark';
@@ -67,7 +72,6 @@
             .then(res => res.json())
             .then(chapters => {
                 const grid = document.getElementById('manhwaGrid');
-                // Get latest chapter (first item or max id)
                 const latest = chapters[0];
                 grid.innerHTML = `
                     <div class="manhwa-card">
