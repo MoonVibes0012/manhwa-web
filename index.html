@@ -4,14 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perpustakaan Manhwa</title>
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Perpustakaan Manhwa">
+    <meta property="og:description" content="Baca komik Webtoon favoritmu dengan tampilan modern dan nyaman.">
+    <meta property="og:image" content="images/chapter-1/01.jpg">
+    <meta property="og:type" content="website">
+
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <button id="themeToggle" class="theme-toggle-btn" title="Toggle Light/Dark Mode">🌙</button>
+
     <div class="container">
         <header>
             <h1>Perpustakaan Manhwa</h1>
             <p>Baca komik Webtoon favoritmu dengan tampilan modern dan nyaman.</p>
+            <div id="continueReadingContainer" style="margin-top: 15px; display: none;">
+                <a href="#" id="continueBtn" class="btn-read" style="background-color: #2e7d32; display: inline-block;">Lanjutkan Membaca</a>
+            </div>
         </header>
 
         <main class="grid-container">
@@ -32,5 +44,34 @@
             </div>
         </main>
     </div>
+
+    <script>
+        // Light/Dark Mode Script
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+
+        if (currentTheme === 'light') {
+            document.body.classList.add('light-mode');
+            themeToggleBtn.textContent = '☀️';
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            themeToggleBtn.textContent = isLight ? '☀️' : '🌙';
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        });
+
+        // Bookmark / Lanjutkan Membaca Check
+        const lastChapter = localStorage.getItem('last_read_chapter');
+        const lastUrl = localStorage.getItem('last_read_url');
+        if (lastChapter && lastUrl) {
+            const container = document.getElementById('continueReadingContainer');
+            const btn = document.getElementById('continueBtn');
+            btn.href = lastUrl;
+            btn.textContent = 'Lanjutkan Membaca (' + lastChapter + ')';
+            container.style.display = 'block';
+        }
+    </script>
 </body>
 </html>

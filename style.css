@@ -8,6 +8,18 @@
     --text-main: #f4f4f5;
     --text-muted: #a1a1aa;
     --border: #27272a;
+    --nav-bg: rgba(18, 18, 20, 0.9);
+}
+
+body.light-mode {
+    --bg-main: #f8f9fa;
+    --bg-card: #ffffff;
+    --accent: #ff5722;
+    --accent-hover: #f4511e;
+    --text-main: #212529;
+    --text-muted: #6c757d;
+    --border: #dee2e6;
+    --nav-bg: rgba(255, 255, 255, 0.9);
 }
 
 * {
@@ -21,6 +33,7 @@ body {
     color: var(--text-main);
     font-family: 'Poppins', sans-serif;
     min-height: 100vh;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 a {
@@ -68,14 +81,14 @@ header p {
     border-radius: 16px;
     overflow: hidden;
     border: 1px solid var(--border);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
     display: flex;
     flex-direction: column;
 }
 
 .manhwa-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
     border-color: rgba(255, 87, 34, 0.4);
 }
 
@@ -160,7 +173,51 @@ header p {
 }
 
 .btn-secondary:hover {
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: rgba(255, 87, 34, 0.05);
+    border-color: var(--accent);
+}
+
+/* Theme Toggle Button */
+.theme-toggle-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: var(--bg-card);
+    color: var(--text-main);
+    border: 1px solid var(--border);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 2000;
+    transition: all 0.2s ease;
+}
+
+.theme-toggle-btn:hover {
+    transform: scale(1.05);
+    border-color: var(--accent);
+}
+
+/* Search Input */
+.search-input {
+    width: 100%;
+    padding: 12px 20px;
+    background-color: var(--bg-card);
+    color: var(--text-main);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.search-input:focus {
     border-color: var(--accent);
 }
 
@@ -170,6 +227,10 @@ body.reader-body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+}
+
+body.reader-body.light-mode {
+    background-color: #121214; /* keep reader dark for comfortable reading or follow theme */
 }
 
 /* Progress Bar */
@@ -187,7 +248,7 @@ body.reader-body {
 .sticky-nav {
     position: sticky;
     top: 0;
-    background: rgba(18, 18, 20, 0.9);
+    background: var(--nav-bg);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border);
     padding: 15px 20px;
@@ -356,4 +417,64 @@ body.reader-body {
 .ch-date {
     font-size: 0.85rem;
     color: var(--text-muted);
+}
+
+/* Modal Popup Styling */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 99999;
+}
+
+.modal-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 30px;
+    border-radius: 16px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.show .modal-card {
+    transform: translateY(0);
+}
+
+.modal-card h3 {
+    margin-top: 0;
+    color: var(--text-main);
+    font-size: 1.3rem;
+}
+
+.modal-card p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 25px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.modal-actions .btn-read, .modal-actions .btn-secondary {
+    flex: 1;
 }

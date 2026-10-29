@@ -8,17 +8,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <button id="themeToggle" class="theme-toggle-btn" title="Toggle Light/Dark Mode">🌙</button>
+
     <div class="container">
         <header>
             <h1>Arsip Chapter</h1>
             <p>Daftar lengkap chapter Manhwa dari awal hingga terbaru.</p>
+            
+            <div class="search-box-wrapper" style="margin: 25px auto 10px auto; max-width: 400px;">
+                <input type="text" id="searchInput" placeholder="Cari chapter (misal: Chapter 3, Sekutu)..." class="search-input">
+            </div>
+
             <div style="margin-top: 20px;">
                 <a href="index.html" class="btn-secondary">← Kembali ke Beranda</a>
             </div>
         </header>
 
         <main class="archive-container">
-            <ul class="chapter-list">
+            <ul class="chapter-list" id="chapterList">
                 <li>
                     <a href="reader.html?chapter=5" class="chapter-item">
                         <span class="ch-number">Chapter 5</span>
@@ -57,5 +64,40 @@
             </ul>
         </main>
     </div>
+
+    <script>
+        // Light/Dark Mode Script
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+
+        if (currentTheme === 'light') {
+            document.body.classList.add('light-mode');
+            themeToggleBtn.textContent = '☀️';
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            themeToggleBtn.textContent = isLight ? '☀️' : '🌙';
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        });
+
+        // Search Filter Script
+        const searchInput = document.getElementById('searchInput');
+        const chapterList = document.getElementById('chapterList');
+        const items = chapterList.getElementsByTagName('li');
+
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            for (let item of items) {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            }
+        });
+    </script>
 </body>
 </html>

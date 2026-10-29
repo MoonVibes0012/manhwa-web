@@ -12,7 +12,8 @@
 
     <nav class="sticky-nav">
         <a href="index.html">← Kembali</a>
-        <span class="chapter-title-nav">Chapter 1</span>
+        <span class="chapter-title-nav" id="chapterTitleNav">Chapter 1</span>
+        <button id="themeToggle" class="theme-toggle-btn" style="position:static; margin-left: auto;" title="Toggle Light/Dark Mode">🌙</button>
     </nav>
 
     <div class="reader-container" id="manhwaContainer">
@@ -21,20 +22,85 @@
         <img src="images/chapter-1/03.jpg" alt="Page 3" class="manhwa-page" loading="lazy">
         
         <div class="chapter-navigation">
-            <a href="#" class="btn-chapter prev-chapter">⬅️ Previous Chapter</a>
-            <a href="#" class="btn-chapter next-chapter">Next Chapter ➡️</a>
+            <a href="#" class="btn-chapter prev-chapter" id="prevBtn">⬅️ Previous Chapter</a>
+            <a href="#" class="btn-chapter next-chapter" id="nextBtn">Next Chapter ➡️</a>
         </div>
     </div>
 
     <button id="backToTop" class="back-to-top" title="Back to Top">⬆️ Back to Top</button>
 
+    <!-- Auto-Next Chapter Modal Popup -->
+    <div id="autoNextModal" class="modal-overlay">
+        <div class="modal-card">
+            <h3>Lanjut ke Chapter Berikutnya?</h3>
+            <p>Kamu sudah membaca sampai akhir halaman.</p>
+            <div class="modal-actions">
+                <a href="#" id="modalNextBtn" class="btn-read">Lanjut Chapter</a>
+                <button id="modalCloseBtn" class="btn-secondary">Tutup</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Progress bar scroll listener
+        // Determine current chapter number from URL query params
+        const urlParams = new URLSearchParams(window.location.search);
+        let chNum = parseInt(urlParams.get('chapter')) || 1;
+
+        document.title = 'Chapter ' + chNum + ' - Perpustakaan Manhwa';
+        document.getElementById('chapterTitleNav').textContent = 'Chapter ' + chNum;
+
+        // Setup Previous and Next chapter links dynamically
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const modalNextBtn = document.getElementById('modalNextBtn');
+
+        const prevCh = Math.max(1, chNum - 1);
+        const nextCh = chNum + 1;
+
+        prevBtn.href = 'reader.html?chapter=' + prevCh;
+        nextBtn.href = 'reader.html?chapter=' + nextCh;
+        modalNextBtn.href = 'reader.html?chapter=' + nextCh;
+
+        // Bookmark / Save Last Read to localStorage
+        localStorage.setItem('last_read_chapter', 'Chapter ' + chNum);
+        localStorage.setItem('last_read_url', window.location.href);
+
+        // Light/Dark Mode Script
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+
+        if (currentTheme === 'light') {
+            document.body.classList.add('light-mode');
+            themeToggleBtn.textContent = '☀️';
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            themeToggleBtn.textContent = isLight ? '☀️' : '🌙';
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        });
+
+        // Progress bar scroll listener & Auto-Next popup detector
+        const modal = document.getElementById('autoNextModal');
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
+        let modalShown = false;
+
         window.addEventListener('scroll', () => {
             const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             const scrolled = (winScroll / height) * 100;
             document.getElementById('progress-bar').style.width = scrolled + '%';
+
+            // Check if 100% (or very close, >= 99)
+            if (scrolled >= 99 && !modalShown) {
+                modal.classList.add('show');
+                modalShown = true;
+            }
+        });
+
+        modalCloseBtn.addEventListener('click', () => {
+            modal.classList.remove('show');
         });
 
         // Image fade-in effect on load
