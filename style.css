@@ -1,68 +1,178 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --bg-main: #121214;
+    --bg-card: #1f1f23;
+    --bg-card-hover: #2a2a30;
+    --accent: #ff5722;
+    --accent-hover: #ff7043;
+    --text-main: #f4f4f5;
+    --text-muted: #a1a1aa;
+    --border: #27272a;
+}
+
 body {
     margin: 0;
     padding: 0;
-    background-color: #121212;
-    color: #e0e0e0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    font-family: 'Poppins', sans-serif;
     min-height: 100vh;
 }
 
 .container {
     width: 100%;
-    max-width: 800px;
-    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
     box-sizing: border-box;
 }
 
-h1 {
+header {
     text-align: center;
-    color: #ff5722;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 }
 
-.chapter-list {
-    list-style: none;
-    padding: 0;
+header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 10px;
 }
 
-.chapter-item {
-    background: #1e1e1e;
-    margin-bottom: 15px;
-    border-radius: 8px;
+header p {
+    color: var(--text-muted);
+    font-size: 1rem;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.manhwa-card {
+    background-color: var(--bg-card);
+    border-radius: 16px;
     overflow: hidden;
-    transition: transform 0.2s;
+    border: 1px solid var(--border);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
 }
 
-.chapter-item:hover {
-    transform: scale(1.02);
+.manhwa-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+    border-color: rgba(255, 87, 34, 0.4);
 }
 
-.chapter-link {
-    display: block;
+.card-img-wrapper {
+    width: 100%;
+    height: 380px;
+    overflow: hidden;
+    position: relative;
+}
+
+.card-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.manhwa-card:hover .card-img-wrapper img {
+    transform: scale(1.05);
+}
+
+.card-content {
     padding: 20px;
-    color: #fff;
-    text-decoration: none;
-    font-size: 1.1rem;
-    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between;
 }
 
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 10px 0;
+    color: var(--text-main);
+}
+
+.card-desc {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.btn-read {
+    display: inline-block;
+    background-color: var(--accent);
+    color: #fff;
+    text-align: center;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: background-color 0.2s ease;
+}
+
+.btn-read:hover {
+    background-color: var(--accent-hover);
+}
+
+/* Reader specific styles */
 body.reader-body {
-    background-color: #000;
+    background-color: #0b0b0d;
     margin: 0;
     padding: 0;
-    overflow-x: hidden;
 }
 
-.manhwa-container {
+.sticky-nav {
+    position: sticky;
+    top: 0;
+    background: rgba(18, 18, 20, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    padding: 15px 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1000;
+}
+
+.sticky-nav a {
+    color: var(--text-main);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s;
+}
+
+.sticky-nav a:hover {
+    color: var(--accent);
+}
+
+.chapter-title-nav {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--text-muted);
+}
+
+.reader-container {
     width: 100%;
     max-width: 800px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
     background-color: #000;
+    box-shadow: 0 0 40px rgba(0,0,0,0.8);
 }
 
 .manhwa-page {
@@ -72,23 +182,4 @@ body.reader-body {
     margin: 0;
     padding: 0;
     border: none;
-}
-
-.reader-nav {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: rgba(30, 30, 30, 0.8);
-    backdrop-filter: blur(5px);
-    border-radius: 30px;
-    padding: 10px 20px;
-    display: flex;
-    gap: 15px;
-    z-index: 100;
-}
-
-.reader-nav a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 0.9rem;
 }

@@ -5,15 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perpustakaan Manhwa</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <h1>Perpustakaan Manhwa</h1>
-        <ul class="chapter-list">
-            <li class="chapter-item">
-                <a href="reader.html?chapter=1" class="chapter-link">Chapter 1 - Awal Perjalanan</a>
-            </li>
-        </ul>
+        <header>
+            <h1>Perpustakaan Manhwa</h1>
+            <p>Baca komik Webtoon favoritmu dengan tampilan modern dan nyaman.</p>
+        </header>
+
+        <main class="grid-container">
+            <div class="manhwa-card">
+                <div class="card-img-wrapper">
+                    <img src="images/chapter-1/01.jpg" alt="Cover Manhwa">
+                </div>
+                <div class="card-content">
+                    <div>
+                        <h2 class="card-title">Awal Perjalanan</h2>
+                        <p class="card-desc">Ikuti kisah seru penuh petualangan di dunia penuh misteri dan aksi mendebarkan.</p>
+                    </div>
+                    <a href="reader.html?chapter=1" class="btn-read">Baca Chapter 1</a>
+                </div>
+            </div>
+        </main>
     </div>
 </body>
 </html>
