@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chapter 1 - Perpustakaan Manhwa</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -22,8 +26,9 @@
         <img src="images/chapter-1/03.jpg" alt="Page 3" class="manhwa-page" loading="lazy">
         
         <div class="chapter-navigation">
-            <a href="#" class="btn-chapter prev-chapter" id="prevBtn">⬅️ Previous Chapter</a>
-            <a href="#" class="btn-chapter next-chapter" id="nextBtn">Next Chapter ➡️</a>
+            <a href="#" class="btn-chapter prev-chapter" id="prevBtn">⬅️ Prev</a>
+            <button class="btn-chapter share-chapter" id="shareBtn">Bagikan 🔗</button>
+            <a href="#" class="btn-chapter next-chapter" id="nextBtn">Next ➡️</a>
         </div>
     </div>
 
@@ -57,9 +62,50 @@
         const prevCh = Math.max(1, chNum - 1);
         const nextCh = chNum + 1;
 
-        prevBtn.href = 'reader.html?chapter=' + prevCh;
-        nextBtn.href = 'reader.html?chapter=' + nextCh;
-        modalNextBtn.href = 'reader.html?chapter=' + nextCh;
+        const prevUrl = 'reader.html?chapter=' + prevCh;
+        const nextUrl = 'reader.html?chapter=' + nextCh;
+
+        prevBtn.href = prevUrl;
+        nextBtn.href = nextUrl;
+        modalNextBtn.href = nextUrl;
+
+        // Keyboard Navigation (ArrowLeft & ArrowRight)
+        document.addEventListener('keydown', (e) => {
+            // Do not trigger if user is typing in inputs
+            if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+
+            if (e.key === 'ArrowLeft') {
+                window.location.href = prevUrl;
+            } else if (e.key === 'ArrowRight') {
+                window.location.href = nextUrl;
+            }
+        });
+
+        // Share Button (Web Share API + Fallback)
+        const shareBtn = document.getElementById('shareBtn');
+        shareBtn.addEventListener('click', async () => {
+            const shareData = {
+                title: document.title,
+                text: 'Baca ' + document.title + ' di Perpustakaan Manhwa!',
+                url: window.location.href
+            };
+
+            if (navigator.share) {
+                try {
+                    await navigator.share(shareData);
+                } catch (err) {
+                    console.log('Share canceled or failed', err);
+                }
+            } else {
+                // Fallback to copy link to clipboard
+                try {
+                    await navigator.clipboard.writeText(window.location.href);
+                    alert('Link chapter berhasil disalin ke clipboard!');
+                } catch (err) {
+                    prompt('Salin link ini:', window.location.href);
+                }
+            }
+        });
 
         // Bookmark / Save Last Read to localStorage
         localStorage.setItem('last_read_chapter', 'Chapter ' + chNum);
