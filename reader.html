@@ -20,7 +20,15 @@
         <button id="themeToggle" class="theme-toggle-btn" style="position:static; margin-left: auto;" title="Toggle Light/Dark Mode">🌙</button>
     </nav>
 
-    <div class="reader-container" id="manhwaContainer">
+    <!-- Reader Settings Toolbar (Sempit, Normal, Lebar) -->
+    <div class="reader-settings-bar">
+        <span>Lebar Gambar:</span>
+        <button class="btn-setting" data-width="narrow">Sempit</button>
+        <button class="btn-setting active" data-width="normal">Normal</button>
+        <button class="btn-setting" data-width="wide">Lebar</button>
+    </div>
+
+    <div class="reader-container normal" id="manhwaContainer">
         <img src="images/chapter-1/01.jpg" alt="Page 1" class="manhwa-page" loading="lazy">
         <img src="images/chapter-1/02.jpg" alt="Page 2" class="manhwa-page" loading="lazy">
         <img src="images/chapter-1/03.jpg" alt="Page 3" class="manhwa-page" loading="lazy">
@@ -71,7 +79,6 @@
 
         // Keyboard Navigation (ArrowLeft & ArrowRight)
         document.addEventListener('keydown', (e) => {
-            // Do not trigger if user is typing in inputs
             if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
 
             if (e.key === 'ArrowLeft') {
@@ -97,7 +104,6 @@
                     console.log('Share canceled or failed', err);
                 }
             } else {
-                // Fallback to copy link to clipboard
                 try {
                     await navigator.clipboard.writeText(window.location.href);
                     alert('Link chapter berhasil disalin ke clipboard!');
@@ -105,6 +111,33 @@
                     prompt('Salin link ini:', window.location.href);
                 }
             }
+        });
+
+        // Reader Settings (Width control)
+        const container = document.getElementById('manhwaContainer');
+        const settingButtons = document.querySelectorAll('.btn-setting');
+        const savedWidthMode = localStorage.getItem('reader_width_mode') || 'normal';
+
+        function applyWidthMode(mode) {
+            container.classList.remove('narrow', 'normal', 'wide');
+            container.classList.add(mode);
+            settingButtons.forEach(btn => {
+                if (btn.getAttribute('data-width') === mode) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            localStorage.setItem('reader_width_mode', mode);
+        }
+
+        applyWidthMode(savedWidthMode);
+
+        settingButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const mode = btn.getAttribute('data-width');
+                applyWidthMode(mode);
+            });
         });
 
         // Bookmark / Save Last Read to localStorage
@@ -138,7 +171,6 @@
             const scrolled = (winScroll / height) * 100;
             document.getElementById('progress-bar').style.width = scrolled + '%';
 
-            // Check if 100% (or very close, >= 99)
             if (scrolled >= 99 && !modalShown) {
                 modal.classList.add('show');
                 modalShown = true;

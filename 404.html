@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Chapter Tidak Ditemukan</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <button id="themeToggle" class="theme-toggle-btn" title="Toggle Light/Dark Mode">🌙</button>
+
+    <div class="container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80vh; text-align: center;">
+        <div style="font-size: 5rem; font-weight: 700; color: var(--accent); margin-bottom: 10px;">404</div>
+        <h1 style="font-size: 2rem; margin-bottom: 15px;">Chapter Tidak Ditemukan</h1>
+        <p style="color: var(--text-muted); max-width: 500px; margin-bottom: 30px;">Maaf, chapter yang kamu cari mungkin belum dirilis atau tautan yang kamu akses tidak valid.</p>
+        <a href="index.html" class="btn-read" style="padding: 14px 28px;">← Kembali ke Beranda</a>
+    </div>
+
+    <script>
+        // Light/Dark Mode Script
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+
+        if (currentTheme === 'light') {
+            document.body.classList.add('light-mode');
+            themeToggleBtn.textContent = '☀️';
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            themeToggleBtn.textContent = isLight ? '☀️' : '🌙';
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        });
+    </script>
+</body>
+</html>

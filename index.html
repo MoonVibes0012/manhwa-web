@@ -29,22 +29,8 @@
             </div>
         </header>
 
-        <main class="grid-container">
-            <div class="manhwa-card">
-                <div class="card-img-wrapper">
-                    <img src="images/chapter-1/01.jpg" alt="Cover Manhwa" loading="lazy">
-                </div>
-                <div class="card-content">
-                    <div>
-                        <h2 class="card-title">Awal Perjalanan</h2>
-                        <p class="card-desc">Ikuti kisah seru penuh petualangan di dunia penuh misteri dan aksi mendebarkan.</p>
-                    </div>
-                    <div class="card-actions">
-                        <a href="reader.html?chapter=1" class="btn-read">Baca Chapter Terbaru</a>
-                        <a href="archive.html" class="btn-secondary">Lihat Semua Chapter</a>
-                    </div>
-                </div>
-            </div>
+        <main class="grid-container" id="manhwaGrid">
+            <!-- Dynamic content loaded from chapters.json -->
         </main>
     </div>
 
@@ -75,6 +61,33 @@
             btn.textContent = 'Lanjutkan Membaca (' + lastChapter + ')';
             container.style.display = 'block';
         }
+
+        // Fetch chapters.json and render dynamically
+        fetch('chapters.json')
+            .then(res => res.json())
+            .then(chapters => {
+                const grid = document.getElementById('manhwaGrid');
+                // Get latest chapter (first item or max id)
+                const latest = chapters[0];
+                grid.innerHTML = `
+                    <div class="manhwa-card">
+                        <div class="card-img-wrapper">
+                            <img src="images/chapter-1/01.jpg" alt="Cover Manhwa" loading="lazy">
+                        </div>
+                        <div class="card-content">
+                            <div>
+                                <h2 class="card-title">Chapter ${latest.id}: ${latest.title}</h2>
+                                <p class="card-desc">Ikuti kisah seru penuh petualangan di dunia penuh misteri dan aksi mendebarkan.</p>
+                            </div>
+                            <div class="card-actions">
+                                <a href="${latest.link}" class="btn-read">Baca Chapter Terbaru</a>
+                                <a href="archive.html" class="btn-secondary">Lihat Semua Chapter</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            })
+            .catch(err => console.error('Failed to load chapters.json', err));
     </script>
 </body>
 </html>

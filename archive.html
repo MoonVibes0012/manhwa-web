@@ -30,41 +30,7 @@
 
         <main class="archive-container">
             <ul class="chapter-list" id="chapterList">
-                <li>
-                    <a href="reader.html?chapter=5" class="chapter-item">
-                        <span class="ch-number">Chapter 5</span>
-                        <span class="ch-title">Pertempuran Akhir</span>
-                        <span class="ch-date">Terbaru</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="reader.html?chapter=4" class="chapter-item">
-                        <span class="ch-number">Chapter 4</span>
-                        <span class="ch-title">Kebangkitan Kekuatan</span>
-                        <span class="ch-date">-</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="reader.html?chapter=3" class="chapter-item">
-                        <span class="ch-number">Chapter 3</span>
-                        <span class="ch-title">Sekutu Baru</span>
-                        <span class="ch-date">-</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="reader.html?chapter=2" class="chapter-item">
-                        <span class="ch-number">Chapter 2</span>
-                        <span class="ch-title">Jejak Misterius</span>
-                        <span class="ch-date">-</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="reader.html?chapter=1" class="chapter-item">
-                        <span class="ch-number">Chapter 1</span>
-                        <span class="ch-title">Awal Perjalanan</span>
-                        <span class="ch-date">-</span>
-                    </a>
-                </li>
+                <!-- Loaded dynamically via Fetch API from chapters.json -->
             </ul>
         </main>
     </div>
@@ -86,22 +52,38 @@
             localStorage.setItem('theme', isLight ? 'light' : 'dark');
         });
 
-        // Search Filter Script
-        const searchInput = document.getElementById('searchInput');
-        const chapterList = document.getElementById('chapterList');
-        const items = chapterList.getElementsByTagName('li');
+        // Fetch chapters.json and populate list
+        fetch('chapters.json')
+            .then(res => res.json())
+            .then(chapters => {
+                const chapterList = document.getElementById('chapterList');
+                chapterList.innerHTML = chapters.map(ch => `
+                    <li>
+                        <a href="${ch.link}" class="chapter-item">
+                            <span class="ch-number">Chapter ${ch.id}</span>
+                            <span class="ch-title">${ch.title}</span>
+                            <span class="ch-date">${ch.date}</span>
+                        </a>
+                    </li>
+                `).join('');
 
-        searchInput.addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase();
-            for (let item of items) {
-                const text = item.textContent.toLowerCase();
-                if (text.includes(query)) {
-                    item.style.display = '';
-                } else {
-                    item.style.display = 'none';
-                }
-            }
-        });
+                // Setup Search Filter Script after items are loaded
+                const searchInput = document.getElementById('searchInput');
+                const items = chapterList.getElementsByTagName('li');
+
+                searchInput.addEventListener('input', (e) => {
+                    const query = e.target.value.toLowerCase();
+                    for (let item of items) {
+                        const text = item.textContent.toLowerCase();
+                        if (text.includes(query)) {
+                            item.style.display = '';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    }
+                });
+            })
+            .catch(err => console.error('Failed to load chapters.json', err));
     </script>
 </body>
 </html>

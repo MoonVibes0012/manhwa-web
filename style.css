@@ -478,3 +478,54 @@ body.reader-body.light-mode {
 .modal-actions .btn-read, .modal-actions .btn-secondary {
     flex: 1;
 }
+
+
+/* Reader Settings Bar */
+.reader-settings-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.btn-setting {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    border: 1px solid var(--border);
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-setting:hover {
+    border-color: var(--accent);
+}
+
+.btn-setting.active {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* Reader Container Width Modes */
+.reader-container.narrow {
+    max-width: 600px !important;
+}
+
+.reader-container.normal {
+    max-width: 800px !important;
+}
+
+.reader-container.wide {
+    max-width: 100% !important;
+    padding: 0 10px !important;
+}
