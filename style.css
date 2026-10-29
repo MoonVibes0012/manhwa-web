@@ -26,6 +26,18 @@ body.light-mode {
     box-sizing: border-box;
 }
 
+/* Micro-Interactions: Press effect on all buttons */
+button:active,
+.btn-read:active,
+.btn-secondary:active,
+.btn-chapter:active,
+.btn-setting:active,
+.theme-toggle-btn:active,
+.archive-card:active,
+.genre-filter-btn:active {
+    transform: scale(0.95) !important;
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
     width: 8px;
@@ -46,7 +58,7 @@ body.light-mode {
 
 body {
     margin: 0;
-    padding: 0 0 75px 0; /* Extra bottom padding for floating bottom nav */
+    padding: 0 0 75px 0;
     background-color: var(--bg-main);
     color: var(--text-main);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -59,7 +71,6 @@ body.fade-in {
     opacity: 1;
 }
 
-/* Typography Headings */
 h1, h2, h3, h4, h5, h6, 
 .card-title, 
 .ch-number, 
@@ -88,7 +99,7 @@ a:hover, a:visited, a:active {
 
 header {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 }
 
 header h1 {
@@ -101,6 +112,109 @@ header h1 {
 header p {
     color: var(--text-muted);
     font-size: 1rem;
+}
+
+/* Hero Banner */
+.hero-banner {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 768px) {
+    .hero-banner {
+        flex-direction: row;
+        min-height: 380px;
+    }
+}
+
+.hero-img-wrapper {
+    width: 100%;
+    height: 300px;
+    position: relative;
+    overflow: hidden;
+}
+
+@media (min-width: 768px) {
+    .hero-img-wrapper {
+        width: 45%;
+        height: auto;
+    }
+}
+
+.hero-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.hero-banner:hover .hero-img-wrapper img {
+    transform: scale(1.04);
+}
+
+.hero-content {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 1;
+    gap: 15px;
+}
+
+.hero-badge {
+    display: inline-block;
+    background-color: rgba(255, 87, 34, 0.15);
+    color: var(--accent);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    width: fit-content;
+}
+
+.hero-title {
+    font-size: 2rem;
+    font-weight: 800;
+    margin: 0;
+    color: var(--text-main);
+    line-height: 1.2;
+}
+
+.hero-desc {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Search Box */
+.search-wrapper {
+    margin-bottom: 30px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 14px 20px;
+    background-color: var(--bg-card);
+    color: var(--text-main);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(255, 87, 34, 0.15);
 }
 
 .grid-container {
@@ -128,7 +242,7 @@ header p {
 
 .card-img-wrapper {
     width: 100%;
-    height: 380px;
+    height: 320px;
     overflow: hidden;
     position: relative;
 }
@@ -153,16 +267,16 @@ header p {
 }
 
 .card-title {
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     font-weight: 700;
-    margin: 0 0 10px 0;
+    margin: 0 0 8px 0;
     color: var(--text-main);
 }
 
 .card-desc {
     font-size: 0.9rem;
     color: var(--text-muted);
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     line-height: 1.5;
 }
 
@@ -187,7 +301,6 @@ header p {
 
 .btn-read:hover {
     background-color: var(--accent-hover);
-    transform: scale(1.02);
     color: #ffffff !important;
     text-decoration: none !important;
 }
@@ -237,25 +350,7 @@ header p {
     border-color: var(--accent);
 }
 
-/* Search Input */
-.search-input {
-    width: 100%;
-    padding: 12px 20px;
-    background-color: var(--bg-card);
-    color: var(--text-main);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.95rem;
-    outline: none;
-    transition: border-color 0.2s ease;
-}
-
-.search-input:focus {
-    border-color: var(--accent);
-}
-
-/* Reader specific styles - True Webtoon style */
+/* Reader specific styles */
 body.reader-body {
     background-color: #000000;
     margin: 0;
@@ -279,7 +374,7 @@ body.reader-body.light-mode {
     transition: width 0.1s ease-out;
 }
 
-/* Glassmorphism Sticky Top Navbar */
+/* Glassmorphism Sticky Top Navbar with Auto-Hide */
 .sticky-nav {
     position: sticky;
     top: 0;
@@ -287,11 +382,16 @@ body.reader-body.light-mode {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border);
-    padding: 15px 20px;
+    padding: 12px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     z-index: 1000;
+    transition: transform 0.3s ease-in-out;
+}
+
+.sticky-nav.hidden {
+    transform: translateY(-100%);
 }
 
 .sticky-nav a {
@@ -311,7 +411,26 @@ body.reader-body.light-mode {
 .chapter-title-nav {
     font-weight: 600;
     font-size: 1rem;
-    color: var(--text-muted);
+    color: var(--text-main);
+}
+
+/* Chapter Dropdown */
+.chapter-dropdown {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    border: 1px solid var(--border);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+}
+
+.chapter-dropdown:focus {
+    border-color: var(--accent);
 }
 
 .reader-container {
@@ -324,14 +443,9 @@ body.reader-body.light-mode {
     padding: 0 0 50px 0;
 }
 
-/* Skeleton Loading & Image Fade-In */
 @keyframes shimmer {
-    0% {
-        background-position: -200% 0;
-    }
-    100% {
-        background-position: 200% 0;
-    }
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
 }
 
 .manhwa-page {
@@ -356,7 +470,6 @@ body.reader-body.light-mode {
     min-height: auto;
 }
 
-/* Chapter Navigation at bottom */
 .chapter-navigation {
     display: flex;
     justify-content: space-between;
@@ -390,7 +503,7 @@ body.reader-body.light-mode {
 /* Back to Top Floating Button */
 .back-to-top {
     position: fixed;
-    bottom: 85px; /* adjust above bottom nav */
+    bottom: 85px;
     right: 25px;
     background-color: var(--bg-card);
     color: var(--text-main);
@@ -419,10 +532,79 @@ body.reader-body.light-mode {
     transform: translateY(-3px);
 }
 
-/* Archive Grid Layout (2 cols mobile, 4 cols desktop) */
+/* Reading Percentage Badge */
+.reading-percentage {
+    position: fixed;
+    bottom: 85px;
+    left: 25px;
+    background-color: var(--bg-card);
+    color: var(--text-main);
+    border: 1px solid var(--border);
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    z-index: 1000;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Custom Toast Notification */
+.toast-notification {
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background-color: #18181b;
+    color: #f4f4f5;
+    border: 1px solid var(--border);
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+    z-index: 10000;
+}
+
+.toast-notification.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+/* Archive Grid Layout & Genre Badges & Filters */
 .archive-container {
     max-width: 1000px;
     margin: 0 auto;
+}
+
+.genre-filters-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.genre-filter-btn {
+    background-color: var(--bg-card);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.genre-filter-btn:hover, .genre-filter-btn.active {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: #ffffff;
+    font-weight: 600;
 }
 
 .archive-grid {
@@ -451,6 +633,7 @@ body.reader-body.light-mode {
     text-decoration: none !important;
     color: var(--text-main) !important;
     transition: all 0.3s ease;
+    position: relative;
 }
 
 .archive-card:hover {
@@ -459,15 +642,37 @@ body.reader-body.light-mode {
     box-shadow: 0 10px 25px rgba(255, 87, 34, 0.18);
 }
 
+.archive-card-img-wrapper {
+    position: relative;
+    height: 180px;
+    overflow: hidden;
+}
+
 .archive-card-img {
     width: 100%;
-    height: 180px;
+    height: 100%;
     object-fit: cover;
     transition: transform 0.4s ease;
 }
 
 .archive-card:hover .archive-card-img {
     transform: scale(1.05);
+}
+
+/* Genre Badge on Cards */
+.genre-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(5px);
+    color: var(--accent);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    text-transform: uppercase;
 }
 
 .archive-card-body {
@@ -498,7 +703,7 @@ body.reader-body.light-mode {
     margin-top: auto;
 }
 
-/* Floating Bottom Navigation (Glassmorphism) */
+/* Floating Bottom Navigation */
 .bottom-nav {
     position: fixed;
     bottom: 0;
@@ -640,16 +845,6 @@ body.reader-body.light-mode {
     font-weight: 600;
 }
 
-/* Reader Container Width Modes */
-.reader-container.narrow {
-    max-width: 600px !important;
-}
-
-.reader-container.normal {
-    max-width: 800px !important;
-}
-
-.reader-container.wide {
-    max-width: 100% !important;
-    padding: 0 10px !important;
-}
+.reader-container.narrow { max-width: 600px !important; }
+.reader-container.normal { max-width: 800px !important; }
+.reader-container.wide { max-width: 100% !important; padding: 0 10px !important; }

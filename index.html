@@ -29,6 +29,26 @@
             </div>
         </header>
 
+        <!-- Hero Banner -->
+        <section class="hero-banner">
+            <div class="hero-img-wrapper">
+                <img src="images/chapter-1/01.jpg" alt="Featured Manhwa Cover" loading="lazy">
+            </div>
+            <div class="hero-content">
+                <span class="hero-badge">🌟 Manhwa Unggulan</span>
+                <h2 class="hero-title">Chronicles of the Shadow</h2>
+                <p class="hero-desc">Ikuti kisah epik penuh aksi, pertarungan menegangkan, dan misteri dunia kuno yang belum terpecahkan. Mulai petualanganmu sekarang!</p>
+                <div>
+                    <a href="reader.html?chapter=1" class="btn-read" style="width: fit-content; padding: 12px 28px;">Baca Chapter 1</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Search -->
+        <div class="search-wrapper">
+            <input type="text" id="homeSearch" placeholder="Cari Manhwa..." class="search-input">
+        </div>
+
         <main class="grid-container" id="manhwaGrid">
             <!-- Dynamic content loaded from chapters.json -->
         </main>
@@ -90,29 +110,45 @@
             container.style.display = 'block';
         }
 
-        // Fetch chapters.json and render dynamically
+        // Fetch chapters.json and render dynamically all chapter cards for quick search & listing
         fetch('chapters.json')
             .then(res => res.json())
             .then(chapters => {
                 const grid = document.getElementById('manhwaGrid');
-                const latest = chapters[0];
-                grid.innerHTML = `
-                    <div class="manhwa-card">
+                grid.innerHTML = chapters.map(ch => `
+                    <div class="manhwa-card" data-title="${ch.title.toLowerCase()} chapter ${ch.id}">
                         <div class="card-img-wrapper">
-                            <img src="images/chapter-1/01.jpg" alt="Cover Manhwa" loading="lazy">
+                            <img src="images/chapter-1/01.jpg" alt="Chapter ${ch.id}" loading="lazy">
+                            <span class="genre-badge">${ch.genre || 'Action'}</span>
                         </div>
                         <div class="card-content">
                             <div>
-                                <h2 class="card-title">Chapter ${latest.id}: ${latest.title}</h2>
-                                <p class="card-desc">Ikuti kisah seru penuh petualangan di dunia penuh misteri dan aksi mendebarkan.</p>
+                                <h3 class="card-title">Chapter ${ch.id}: ${ch.title}</h3>
+                                <p class="card-desc">Baca chapter ${ch.id} dari seri Chronicles of the Shadow dengan kualitas terbaik.</p>
                             </div>
                             <div class="card-actions">
-                                <a href="${latest.link}" class="btn-read">Baca Chapter Terbaru</a>
-                                <a href="archive.html" class="btn-secondary">Lihat Semua Chapter</a>
+                                <a href="${ch.link}" class="btn-read">Baca Chapter</a>
                             </div>
                         </div>
                     </div>
-                `;
+                `).join('');
+
+                // Quick Search Functionality
+                const homeSearch = document.getElementById('homeSearch');
+                const cards = grid.getElementsByClassName('manhwa-card');
+
+                homeSearch.addEventListener('input', (e) => {
+                    const query = e.target.value.toLowerCase();
+                    for (let card of cards) {
+                        const titleData = card.getAttribute('data-title');
+                        const text = card.textContent.toLowerCase();
+                        if (titleData.includes(query) || text.includes(query)) {
+                            card.style.display = 'flex';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    }
+                });
             })
             .catch(err => console.error('Failed to load chapters.json', err));
     </script>

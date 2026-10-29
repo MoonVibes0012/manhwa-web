@@ -19,11 +19,19 @@
             <h1>Arsip Chapter</h1>
             <p>Daftar lengkap chapter Manhwa dari awal hingga terbaru.</p>
             
-            <div class="search-box-wrapper" style="margin: 25px auto 10px auto; max-width: 400px;">
+            <div class="search-box-wrapper" style="margin: 20px auto 10px auto; max-width: 400px;">
                 <input type="text" id="searchInput" placeholder="Cari chapter (misal: Chapter 3, Sekutu)..." class="search-input">
             </div>
 
-            <div style="margin-top: 20px;">
+            <!-- Genre Filter Buttons (3+ genres: Semua, Action, Fantasy, Adventure) -->
+            <div class="genre-filters-wrapper" id="genreFilters">
+                <button class="genre-filter-btn active" data-genre="all">Semua</button>
+                <button class="genre-filter-btn" data-genre="Action">Action</button>
+                <button class="genre-filter-btn" data-genre="Fantasy">Fantasy</button>
+                <button class="genre-filter-btn" data-genre="Adventure">Adventure</button>
+            </div>
+
+            <div style="margin-top: 15px;">
                 <a href="index.html" class="btn-secondary">← Kembali ke Beranda</a>
             </div>
         </header>
@@ -80,15 +88,16 @@
             localStorage.setItem('theme', isLight ? 'light' : 'dark');
         });
 
-        // Fetch chapters.json and populate Grid
+        // Fetch chapters.json and populate Grid with badges and filter logic
         fetch('chapters.json')
             .then(res => res.json())
             .then(chapters => {
                 const chapterGrid = document.getElementById('chapterGrid');
                 chapterGrid.innerHTML = chapters.map(ch => `
-                    <a href="${ch.link}" class="archive-card">
-                        <div style="overflow: hidden; position: relative; height: 180px;">
+                    <a href="${ch.link}" class="archive-card" data-genre="${ch.genre || 'Action'}" data-search="${ch.title.toLowerCase()} chapter ${ch.id} ${(ch.genre || '').toLowerCase()}">
+                        <div class="archive-card-img-wrapper">
                             <img src="images/chapter-1/01.jpg" alt="Chapter ${ch.id}" class="archive-card-img" loading="lazy">
+                            <span class="genre-badge">${ch.genre || 'Action'}</span>
                         </div>
                         <div class="archive-card-body">
                             <span class="archive-card-number">Chapter ${ch.id}</span>
@@ -100,20 +109,42 @@
 
                 const searchInput = document.getElementById('searchInput');
                 const cards = chapterGrid.getElementsByClassName('archive-card');
+                const filterBtns = document.querySelectorAll('.genre-filter-btn');
 
-                searchInput.addEventListener('input', (e) => {
-                    const query = e.target.value.toLowerCase();
+                let currentGenre = 'all';
+                let currentQuery = '';
+
+                function filterCards() {
                     for (let card of cards) {
-                        const text = card.textContent.toLowerCase();
-                        if (text.includes(query)) {
+                        const cardGenre = card.getAttribute('data-genre');
+                        const searchData = card.getAttribute('data-search');
+                        
+                        const matchesGenre = (currentGenre === 'all' || cardGenre === currentGenre);
+                        const matchesSearch = searchData.includes(currentQuery);
+
+                        if (matchesGenre && matchesSearch) {
                             card.style.display = 'flex';
                         } else {
                             card.style.display = 'none';
                         }
                     }
+                }
+
+                searchInput.addEventListener('input', (e) => {
+                    currentQuery = e.target.value.toLowerCase();
+                    filterCards();
+                });
+
+                filterBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        filterBtns.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        currentGenre = btn.getAttribute('data-genre');
+                        filterCards();
+                    });
                 });
             })
-            .catch(err => console.error('Failed to load chapters.json', err));
+            .catch(err => console.error('Failed to load chapters.json in archive', err));
     </script>
 </body>
 </html>

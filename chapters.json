@@ -2,31 +2,36 @@
   {
     "id": 5,
     "title": "Pertempuran Akhir",
+    "genre": "Action",
     "date": "Terbaru",
     "link": "reader.html?chapter=5"
   },
   {
     "id": 4,
     "title": "Kebangkitan Kekuatan",
-    "date": "-",
+    "genre": "Fantasy",
+    "date": "2 hari lalu",
     "link": "reader.html?chapter=4"
   },
   {
     "id": 3,
     "title": "Sekutu Baru",
-    "date": "-",
+    "genre": "Adventure",
+    "date": "5 hari lalu",
     "link": "reader.html?chapter=3"
   },
   {
     "id": 2,
     "title": "Jejak Misterius",
-    "date": "-",
+    "genre": "Fantasy",
+    "date": "1 minggu lalu",
     "link": "reader.html?chapter=2"
   },
   {
     "id": 1,
     "title": "Awal Perjalanan",
-    "date": "-",
+    "genre": "Action",
+    "date": "2 minggu lalu",
     "link": "reader.html?chapter=1"
   }
 ]
