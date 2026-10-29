@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@500;600;700;800&display=swap');
 
 :root {
     --bg-main: #121214;
@@ -8,7 +8,7 @@
     --text-main: #f4f4f5;
     --text-muted: #a1a1aa;
     --border: #27272a;
-    --nav-bg: rgba(18, 18, 20, 0.75);
+    --nav-bg: rgba(18, 18, 20, 0.85);
 }
 
 body.light-mode {
@@ -19,7 +19,7 @@ body.light-mode {
     --text-main: #212529;
     --text-muted: #6c757d;
     --border: #dee2e6;
-    --nav-bg: rgba(255, 255, 255, 0.75);
+    --nav-bg: rgba(255, 255, 255, 0.85);
 }
 
 * {
@@ -46,10 +46,10 @@ body.light-mode {
 
 body {
     margin: 0;
-    padding: 0;
+    padding: 0 0 75px 0; /* Extra bottom padding for floating bottom nav */
     background-color: var(--bg-main);
     color: var(--text-main);
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     min-height: 100vh;
     opacity: 0;
     transition: background-color 0.3s ease, color 0.3s ease, opacity 0.5s ease-in-out;
@@ -57,6 +57,16 @@ body {
 
 body.fade-in {
     opacity: 1;
+}
+
+/* Typography Headings */
+h1, h2, h3, h4, h5, h6, 
+.card-title, 
+.ch-number, 
+.ch-title, 
+.chapter-title-nav, 
+.bottom-nav-item span {
+    font-family: 'Montserrat', sans-serif;
 }
 
 a {
@@ -83,7 +93,7 @@ header {
 
 header h1 {
     font-size: 2.5rem;
-    font-weight: 700;
+    font-weight: 800;
     color: var(--text-main);
     margin-bottom: 10px;
 }
@@ -144,7 +154,7 @@ header p {
 
 .card-title {
     font-size: 1.25rem;
-    font-weight: 600;
+    font-weight: 700;
     margin: 0 0 10px 0;
     color: var(--text-main);
 }
@@ -235,7 +245,7 @@ header p {
     color: var(--text-main);
     border: 1px solid var(--border);
     border-radius: 12px;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 0.95rem;
     outline: none;
     transition: border-color 0.2s ease;
@@ -249,7 +259,7 @@ header p {
 body.reader-body {
     background-color: #000000;
     margin: 0;
-    padding: 0;
+    padding: 0 0 75px 0;
     overflow-x: hidden;
 }
 
@@ -269,7 +279,7 @@ body.reader-body.light-mode {
     transition: width 0.1s ease-out;
 }
 
-/* Glassmorphism Navbar */
+/* Glassmorphism Sticky Top Navbar */
 .sticky-nav {
     position: sticky;
     top: 0;
@@ -380,8 +390,8 @@ body.reader-body.light-mode {
 /* Back to Top Floating Button */
 .back-to-top {
     position: fixed;
-    bottom: 30px;
-    right: 30px;
+    bottom: 85px; /* adjust above bottom nav */
+    right: 25px;
     background-color: var(--bg-card);
     color: var(--text-main);
     border: 1px solid var(--border);
@@ -409,58 +419,129 @@ body.reader-body.light-mode {
     transform: translateY(-3px);
 }
 
-/* Archive Page Styling with Hover Animation */
+/* Archive Grid Layout (2 cols mobile, 4 cols desktop) */
 .archive-container {
-    max-width: 800px;
+    max-width: 1000px;
     margin: 0 auto;
 }
 
-.chapter-list {
-    list-style: none;
+.archive-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
     padding: 0;
     margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    list-style: none;
 }
 
-.chapter-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+@media (min-width: 768px) {
+    .archive-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 25px;
+    }
+}
+
+.archive-card {
     background-color: var(--bg-card);
     border: 1px solid var(--border);
-    padding: 20px 24px;
     border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
     text-decoration: none !important;
     color: var(--text-main) !important;
     transition: all 0.3s ease;
 }
 
-.chapter-item:hover {
+.archive-card:hover {
     border-color: var(--accent);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(255, 87, 34, 0.12);
-    background-color: rgba(255, 87, 34, 0.03);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(255, 87, 34, 0.18);
 }
 
-.ch-number {
-    font-weight: 600;
-    color: var(--accent);
-    font-size: 1.05rem;
-    min-width: 100px;
+.archive-card-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    transition: transform 0.4s ease;
 }
 
-.ch-title {
+.archive-card:hover .archive-card-img {
+    transform: scale(1.05);
+}
+
+.archive-card-body {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
     flex-grow: 1;
-    font-weight: 500;
-    color: var(--text-main);
-    font-size: 1rem;
 }
 
-.ch-date {
+.archive-card-number {
     font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+}
+
+.archive-card-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-main);
+    line-height: 1.3;
+}
+
+.archive-card-date {
+    font-size: 0.75rem;
     color: var(--text-muted);
+    margin-top: auto;
+}
+
+/* Floating Bottom Navigation (Glassmorphism) */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 65px;
+    background: var(--nav-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    z-index: 9999;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    color: var(--text-muted) !important;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-decoration: none !important;
+    transition: all 0.2s ease;
+    padding: 6px 16px;
+    border-radius: 12px;
+}
+
+.bottom-nav-item .icon {
+    font-size: 1.2rem;
+}
+
+.bottom-nav-item:hover, .bottom-nav-item.active {
+    color: var(--accent) !important;
+}
+
+.bottom-nav-item.active {
+    font-weight: 700;
+    background-color: rgba(255, 87, 34, 0.1);
 }
 
 /* Modal Popup Styling */
@@ -542,7 +623,7 @@ body.reader-body.light-mode {
     border: 1px solid var(--border);
     padding: 6px 14px;
     border-radius: 8px;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 0.85rem;
     cursor: pointer;
     transition: all 0.2s ease;

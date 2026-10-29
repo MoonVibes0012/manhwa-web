@@ -9,17 +9,33 @@
     <link rel="manifest" href="manifest.json">
 
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <button id="themeToggle" class="theme-toggle-btn" title="Toggle Light/Dark Mode">🌙</button>
 
     <div class="container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80vh; text-align: center;">
-        <div style="font-size: 5rem; font-weight: 700; color: var(--accent); margin-bottom: 10px;">404</div>
+        <div style="font-size: 5rem; font-weight: 800; color: var(--accent); margin-bottom: 10px;">404</div>
         <h1 style="font-size: 2rem; margin-bottom: 15px;">Chapter Tidak Ditemukan</h1>
         <p style="color: var(--text-muted); max-width: 500px; margin-bottom: 30px;">Maaf, chapter yang kamu cari mungkin belum dirilis atau tautan yang kamu akses tidak valid.</p>
         <a href="index.html" class="btn-read" style="padding: 14px 28px;">← Kembali ke Beranda</a>
     </div>
+
+    <!-- Floating Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="bottom-nav-item">
+            <span class="icon">🏠</span>
+            <span>Home</span>
+        </a>
+        <a href="archive.html" class="bottom-nav-item">
+            <span class="icon">📚</span>
+            <span>Arsip</span>
+        </a>
+        <a href="about.html" class="bottom-nav-item">
+            <span class="icon">👤</span>
+            <span>About</span>
+        </a>
+    </nav>
 
     <script>
         // Smooth Page Transition Fade-In

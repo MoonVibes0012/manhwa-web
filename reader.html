@@ -9,7 +9,7 @@
     <link rel="manifest" href="manifest.json">
 
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body class="reader-body">
     <div id="progress-bar"></div>
@@ -47,6 +47,22 @@
     </div>
 
     <button id="backToTop" class="back-to-top" title="Back to Top">⬆️ Back to Top</button>
+
+    <!-- Floating Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="bottom-nav-item">
+            <span class="icon">🏠</span>
+            <span>Home</span>
+        </a>
+        <a href="archive.html" class="bottom-nav-item">
+            <span class="icon">📚</span>
+            <span>Arsip</span>
+        </a>
+        <a href="about.html" class="bottom-nav-item">
+            <span class="icon">👤</span>
+            <span>About</span>
+        </a>
+    </nav>
 
     <!-- Auto-Next Chapter Modal Popup -->
     <div id="autoNextModal" class="modal-overlay">
@@ -122,7 +138,6 @@
                 autoScrollBtn.textContent = '⏸️ Pause';
                 scrollInterval = setInterval(() => {
                     window.scrollBy({ top: 2, behavior: 'smooth' });
-                    // Stop if reached bottom
                     if ((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight - 5) {
                         clearInterval(scrollInterval);
                         scrollInterval = null;

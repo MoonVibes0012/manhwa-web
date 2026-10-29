@@ -9,14 +9,10 @@
     <link rel="manifest" href="manifest.json">
 
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <button id="themeToggle" class="theme-toggle-btn" title="Toggle Light/Dark Mode">🌙</button>
-
-    <div style="position: absolute; top: 20px; left: 20px; z-index: 2000;">
-        <a href="about.html" class="btn-secondary" style="padding: 10px 16px; font-size: 0.9rem;">About</a>
-    </div>
 
     <div class="container">
         <header>
@@ -33,11 +29,27 @@
         </header>
 
         <main class="archive-container">
-            <ul class="chapter-list" id="chapterList">
-                <!-- Loaded dynamically via Fetch API from chapters.json -->
-            </ul>
+            <div class="archive-grid" id="chapterGrid">
+                <!-- Loaded dynamically via Fetch API from chapters.json into Grid Cards -->
+            </div>
         </main>
     </div>
+
+    <!-- Floating Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="bottom-nav-item">
+            <span class="icon">🏠</span>
+            <span>Home</span>
+        </a>
+        <a href="archive.html" class="bottom-nav-item active">
+            <span class="icon">📚</span>
+            <span>Arsip</span>
+        </a>
+        <a href="about.html" class="bottom-nav-item">
+            <span class="icon">👤</span>
+            <span>About</span>
+        </a>
+    </nav>
 
     <script>
         // Smooth Page Transition Fade-In
@@ -68,32 +80,35 @@
             localStorage.setItem('theme', isLight ? 'light' : 'dark');
         });
 
-        // Fetch chapters.json and populate list
+        // Fetch chapters.json and populate Grid
         fetch('chapters.json')
             .then(res => res.json())
             .then(chapters => {
-                const chapterList = document.getElementById('chapterList');
-                chapterList.innerHTML = chapters.map(ch => `
-                    <li>
-                        <a href="${ch.link}" class="chapter-item">
-                            <span class="ch-number">Chapter ${ch.id}</span>
-                            <span class="ch-title">${ch.title}</span>
-                            <span class="ch-date">${ch.date}</span>
-                        </a>
-                    </li>
+                const chapterGrid = document.getElementById('chapterGrid');
+                chapterGrid.innerHTML = chapters.map(ch => `
+                    <a href="${ch.link}" class="archive-card">
+                        <div style="overflow: hidden; position: relative; height: 180px;">
+                            <img src="images/chapter-1/01.jpg" alt="Chapter ${ch.id}" class="archive-card-img" loading="lazy">
+                        </div>
+                        <div class="archive-card-body">
+                            <span class="archive-card-number">Chapter ${ch.id}</span>
+                            <span class="archive-card-title">${ch.title}</span>
+                            <span class="archive-card-date">${ch.date}</span>
+                        </div>
+                    </a>
                 `).join('');
 
                 const searchInput = document.getElementById('searchInput');
-                const items = chapterList.getElementsByTagName('li');
+                const cards = chapterGrid.getElementsByClassName('archive-card');
 
                 searchInput.addEventListener('input', (e) => {
                     const query = e.target.value.toLowerCase();
-                    for (let item of items) {
-                        const text = item.textContent.toLowerCase();
+                    for (let card of cards) {
+                        const text = card.textContent.toLowerCase();
                         if (text.includes(query)) {
-                            item.style.display = '';
+                            card.style.display = 'flex';
                         } else {
-                            item.style.display = 'none';
+                            card.style.display = 'none';
                         }
                     }
                 });

@@ -15,14 +15,10 @@
     <link rel="manifest" href="manifest.json">
 
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <button id="themeToggle" class="theme-toggle-btn" title="Toggle Light/Dark Mode">🌙</button>
-
-    <div style="position: absolute; top: 20px; left: 20px; z-index: 2000;">
-        <a href="about.html" class="btn-secondary" style="padding: 10px 16px; font-size: 0.9rem;">About</a>
-    </div>
 
     <div class="container">
         <header>
@@ -37,6 +33,22 @@
             <!-- Dynamic content loaded from chapters.json -->
         </main>
     </div>
+
+    <!-- Floating Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="bottom-nav-item active">
+            <span class="icon">🏠</span>
+            <span>Home</span>
+        </a>
+        <a href="archive.html" class="bottom-nav-item">
+            <span class="icon">📚</span>
+            <span>Arsip</span>
+        </a>
+        <a href="about.html" class="bottom-nav-item">
+            <span class="icon">👤</span>
+            <span>About</span>
+        </a>
+    </nav>
 
     <script>
         // Smooth Page Transition Fade-In
