@@ -14,6 +14,9 @@
 <body class="reader-body">
     <div id="progress-bar"></div>
 
+    <!-- Floating Sticky Chapter Title Badge -->
+    <div id="stickyChapterBadge" class="sticky-chapter-badge">Chapter 1</div>
+
     <nav class="sticky-nav" id="stickyNav">
         <div style="display: flex; align-items: center; gap: 15px;">
             <a href="index.html">← Kembali</a>
@@ -44,7 +47,6 @@
         <img src="images/chapter-1/02.jpg" alt="Page 2" class="manhwa-page" loading="lazy">
         <img src="images/chapter-1/03.jpg" alt="Page 3" class="manhwa-page" loading="lazy">
         
-        
         <!-- Elegant End of Chapter Box -->
         <div class="elegant-end-box">
             <h3>Terima kasih sudah membaca!</h3>
@@ -66,6 +68,11 @@
 
     <!-- Custom Toast Notification -->
     <div id="toastNotification" class="toast-notification">Link berhasil disalin!</div>
+
+    <!-- Image Click-to-Zoom Lightbox Overlay -->
+    <div id="imageLightbox" class="lightbox-overlay">
+        <img id="lightboxImg" class="lightbox-img" src="" alt="Zoomed Image">
+    </div>
 
     <!-- Floating Bottom Navigation -->
     <nav class="bottom-nav">
@@ -114,26 +121,44 @@
 
         document.title = 'Chapter ' + chNum + ' - Perpustakaan Manhwa';
 
-        // Fetch chapters.json to populate chapter dropdown and setup nav
-        
+        const prevCh = Math.max(1, chNum - 1);
+        const nextCh = chNum + 1;
+        const prevUrl = 'reader.html?chapter=' + prevCh;
+        const nextUrl = 'reader.html?chapter=' + nextCh;
+
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const modalNextBtn = document.getElementById('modalNextBtn');
+
+        if (prevBtn) prevBtn.href = prevUrl;
+        if (nextBtn) nextBtn.href = nextUrl;
+        if (modalNextBtn) modalNextBtn.href = nextUrl;
+
+        const stickyBadge = document.getElementById('stickyChapterBadge');
+        if (stickyBadge) stickyBadge.textContent = 'Chapter ' + chNum;
+
         // Fetch chapters.json to populate chapter dropdown and setup nav
         fetch('chapters.json')
             .then(res => res.json())
             .then(chapters => {
                 const dropdown = document.getElementById('chapterDropdown');
-                dropdown.innerHTML = chapters.map(ch => `
-                    <option value="${ch.id}" ${ch.id === chNum ? 'selected' : ''}>Chapter ${ch.id}: ${ch.title}</option>
-                `).join('');
+                if (dropdown) {
+                    dropdown.innerHTML = chapters.map(ch => `
+                        <option value="${ch.id}" ${ch.id === chNum ? 'selected' : ''}>Chapter ${ch.id}: ${ch.title}</option>
+                    `).join('');
+
+                    dropdown.addEventListener('change', (e) => {
+                        window.location.href = 'reader.html?chapter=' + e.target.value;
+                    });
+                }
 
                 const currentChObj = chapters.find(ch => ch.id === chNum);
                 const titleHeading = document.getElementById('chapterTitleHeading');
-                if (titleHeading && currentChObj) {
-                    titleHeading.textContent = `Chapter ${currentChObj.id}: ${currentChObj.title}`;
-                } else if (titleHeading) {
-                    titleHeading.textContent = `Chapter ${chNum}`;
-                }
+                const titleText = currentChObj ? `Chapter ${currentChObj.id}: ${currentChObj.title}` : `Chapter ${chNum}`;
 
-                
+                if (titleHeading) titleHeading.textContent = titleText;
+                if (stickyBadge) stickyBadge.textContent = currentChObj ? `Chapter ${currentChObj.id}` : `Chapter ${chNum}`;
+
                 const endChapterText = document.getElementById('endChapterText');
                 const endNextBtn = document.getElementById('endNextBtn');
                 if (endChapterText) {
@@ -142,10 +167,6 @@
                 if (endNextBtn) {
                     endNextBtn.href = nextUrl;
                 }
-    
-                dropdown.addEventListener('change', (e) => {
-                    window.location.href = 'reader.html?chapter=' + e.target.value;
-                });
 
                 // Calculate Reading Time Estimate based on number of <img> tags (* 15 seconds)
                 const imgCount = document.querySelectorAll('#manhwaContainer img').length;
@@ -157,21 +178,6 @@
                 }
             })
             .catch(err => console.error('Failed to load chapters in reader', err));
-
-
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const modalNextBtn = document.getElementById('modalNextBtn');
-
-        const prevCh = Math.max(1, chNum - 1);
-        const nextCh = chNum + 1;
-
-        const prevUrl = 'reader.html?chapter=' + prevCh;
-        const nextUrl = 'reader.html?chapter=' + nextCh;
-
-        prevBtn.href = prevUrl;
-        nextBtn.href = nextUrl;
-        modalNextBtn.href = nextUrl;
 
         // Keyboard Navigation
         document.addEventListener('keydown', (e) => {
@@ -189,60 +195,66 @@
         let scrollInterval = null;
         let isAutoScrolling = false;
 
-        autoScrollBtn.addEventListener('click', () => {
-            if (isAutoScrolling) {
-                clearInterval(scrollInterval);
-                scrollInterval = null;
-                isAutoScrolling = false;
-                autoScrollBtn.textContent = '▶️ Auto-Scroll';
-            } else {
-                isAutoScrolling = true;
-                autoScrollBtn.textContent = '⏸️ Pause';
-                scrollInterval = setInterval(() => {
-                    window.scrollBy({ top: 2, behavior: 'smooth' });
-                    if ((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight - 5) {
-                        clearInterval(scrollInterval);
-                        scrollInterval = null;
-                        isAutoScrolling = false;
-                        autoScrollBtn.textContent = '▶️ Auto-Scroll';
-                    }
-                }, 50);
-            }
-        });
+        if (autoScrollBtn) {
+            autoScrollBtn.addEventListener('click', () => {
+                if (isAutoScrolling) {
+                    clearInterval(scrollInterval);
+                    scrollInterval = null;
+                    isAutoScrolling = false;
+                    autoScrollBtn.textContent = '▶️ Auto-Scroll';
+                } else {
+                    isAutoScrolling = true;
+                    autoScrollBtn.textContent = '⏸️ Pause';
+                    scrollInterval = setInterval(() => {
+                        window.scrollBy({ top: 2, behavior: 'smooth' });
+                        if ((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight - 5) {
+                            clearInterval(scrollInterval);
+                            scrollInterval = null;
+                            isAutoScrolling = false;
+                            autoScrollBtn.textContent = '▶️ Auto-Scroll';
+                        }
+                    }, 50);
+                }
+            });
+        }
 
         // Toast Notification Function
         function showToast() {
             const toast = document.getElementById('toastNotification');
-            toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
+            if (toast) {
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
         }
 
         // Share Button (Web Share API + Fallback with Custom Toast)
         const shareBtn = document.getElementById('shareBtn');
-        shareBtn.addEventListener('click', async () => {
-            const shareData = {
-                title: document.title,
-                text: 'Baca ' + document.title + ' di Perpustakaan Manhwa!',
-                url: window.location.href
-            };
+        if (shareBtn) {
+            shareBtn.addEventListener('click', async () => {
+                const shareData = {
+                    title: document.title,
+                    text: 'Baca ' + document.title + ' di Perpustakaan Manhwa!',
+                    url: window.location.href
+                };
 
-            if (navigator.share) {
-                try {
-                    await navigator.share(shareData);
-                } catch (err) {
-                    console.log('Share canceled or failed', err);
+                if (navigator.share) {
+                    try {
+                        await navigator.share(shareData);
+                    } catch (err) {
+                        console.log('Share canceled or failed', err);
+                    }
+                } else {
+                    try {
+                        await navigator.clipboard.writeText(window.location.href);
+                        showToast();
+                    } catch (err) {
+                        prompt('Salin link ini:', window.location.href);
+                    }
                 }
-            } else {
-                try {
-                    await navigator.clipboard.writeText(window.location.href);
-                    showToast();
-                } catch (err) {
-                    prompt('Salin link ini:', window.location.href);
-                }
-            }
-        });
+            });
+        }
 
         // Reader Settings (Width control)
         const container = document.getElementById('manhwaContainer');
@@ -250,8 +262,10 @@
         const savedWidthMode = localStorage.getItem('reader_width_mode') || 'normal';
 
         function applyWidthMode(mode) {
-            container.classList.remove('narrow', 'normal', 'wide');
-            container.classList.add(mode);
+            if (container) {
+                container.classList.remove('narrow', 'normal', 'wide');
+                container.classList.add(mode);
+            }
             settingButtons.forEach(btn => {
                 if (btn.getAttribute('data-width') === mode) {
                     btn.classList.add('active');
@@ -281,17 +295,19 @@
 
         if (currentTheme === 'light') {
             document.body.classList.add('light-mode');
-            themeToggleBtn.textContent = '☀️';
+            if (themeToggleBtn) themeToggleBtn.textContent = '☀️';
         }
 
-        themeToggleBtn.addEventListener('click', () => {
-            document.body.classList.toggle('light-mode');
-            const isLight = document.body.classList.contains('light-mode');
-            themeToggleBtn.textContent = isLight ? '☀️' : '🌙';
-            localStorage.setItem('theme', isLight ? 'light' : 'dark');
-        });
+        if (themeToggleBtn) {
+            themeToggleBtn.addEventListener('click', () => {
+                document.body.classList.toggle('light-mode');
+                const isLight = document.body.classList.contains('light-mode');
+                themeToggleBtn.textContent = isLight ? '☀️' : '🌙';
+                localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            });
+        }
 
-        // Scroll listener: progress bar, reading percentage, auto-hide navbar, and auto-next modal
+        // Scroll listener: progress bar, reading percentage, sticky badge, auto-hide navbar, auto-next modal
         const modal = document.getElementById('autoNextModal');
         const modalCloseBtn = document.getElementById('modalCloseBtn');
         const stickyNav = document.getElementById('stickyNav');
@@ -306,30 +322,65 @@
             const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
             
             // Progress bar
-            document.getElementById('progress-bar').style.width = scrolled + '%';
+            const progressBar = document.getElementById('progress-bar');
+            if (progressBar) progressBar.style.width = scrolled + '%';
 
             // Reading percentage text
-            const percentRounded = Math.min(100, Math.max(0, Math.round(scrolled)));
-            readingPercentageEl.textContent = percentRounded + '%';
+            if (readingPercentageEl) {
+                const percentRounded = Math.min(100, Math.max(0, Math.round(scrolled)));
+                readingPercentageEl.textContent = percentRounded + '%';
+            }
+
+            // Floating Sticky Chapter Title Badge Visibility
+            if (stickyBadge) {
+                if (currentScrollY > 120) {
+                    stickyBadge.classList.add('show');
+                } else {
+                    stickyBadge.classList.remove('show');
+                }
+            }
 
             // Auto-hide sticky navbar on scroll down, show on scroll up
-            if (currentScrollY > lastScrollY && currentScrollY > 60) {
-                stickyNav.classList.add('hidden');
-            } else {
-                stickyNav.classList.remove('hidden');
+            if (stickyNav) {
+                if (currentScrollY > lastScrollY && currentScrollY > 60) {
+                    stickyNav.classList.add('hidden');
+                } else {
+                    stickyNav.classList.remove('hidden');
+                }
             }
             lastScrollY = currentScrollY;
 
             // Auto-next modal popup at bottom
-            if (scrolled >= 99 && !modalShown) {
+            if (scrolled >= 99 && !modalShown && modal) {
                 modal.classList.add('show');
                 modalShown = true;
             }
         });
 
-        modalCloseBtn.addEventListener('click', () => {
-            modal.classList.remove('show');
+        if (modalCloseBtn && modal) {
+            modalCloseBtn.addEventListener('click', () => {
+                modal.classList.remove('show');
+            });
+        }
+
+        // Image Click-to-Zoom (Lightbox) Logic
+        const lightbox = document.getElementById('imageLightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+
+        document.querySelectorAll('.manhwa-page').forEach(img => {
+            img.addEventListener('click', () => {
+                if (lightbox && lightboxImg) {
+                    lightboxImg.src = img.src;
+                    lightbox.classList.add('show');
+                }
+            });
         });
+
+        if (lightbox) {
+            lightbox.addEventListener('click', () => {
+                lightbox.classList.remove('show');
+            });
+        }
 
         // Image fade-in effect on load & Back to Top
         document.addEventListener('DOMContentLoaded', () => {
@@ -344,19 +395,20 @@
             });
 
             const backToTopBtn = document.getElementById('backToTop');
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 300) {
-                    backToTopBtn.classList.add('show');
-                } else {
-                    backToTopBtn.classList.remove('show');
-                }
-            });
+            if (backToTopBtn) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 300) {
+                        backToTopBtn.classList.add('show');
+                    } else {
+                        backToTopBtn.classList.remove('show');
+                    }
+                });
 
-            backToTopBtn.addEventListener('click', () => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
+                backToTopBtn.addEventListener('click', () => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
         });
-    </script>
 
         // Floating Action Button (FAB) Logic
         const fabContainer = document.createElement('div');
@@ -380,10 +432,12 @@
         const fabThemeToggle = document.getElementById('fabThemeToggle');
         const fabScrollTop = document.getElementById('fabScrollTop');
 
-        fabMainBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            fabContainer.classList.toggle('active');
-        });
+        if (fabMainBtn) {
+            fabMainBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                fabContainer.classList.toggle('active');
+            });
+        }
 
         document.addEventListener('click', (e) => {
             if (!fabContainer.contains(e.target)) {
@@ -391,21 +445,24 @@
             }
         });
 
-        fabThemeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('light-mode');
-            const isLight = document.body.classList.contains('light-mode');
-            localStorage.setItem('theme', isLight ? 'light' : 'dark');
-            const themeToggleBtn = document.getElementById('themeToggle');
-            if (themeToggleBtn) {
-                themeToggleBtn.textContent = isLight ? '☀️' : '🌙';
-            }
-            fabContainer.classList.remove('active');
-        });
+        if (fabThemeToggle) {
+            fabThemeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('light-mode');
+                const isLight = document.body.classList.contains('light-mode');
+                localStorage.setItem('theme', isLight ? 'light' : 'dark');
+                if (themeToggleBtn) {
+                    themeToggleBtn.textContent = isLight ? '☀️' : '🌙';
+                }
+                fabContainer.classList.remove('active');
+            });
+        }
 
-        fabScrollTop.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            fabContainer.classList.remove('active');
-        });
-
+        if (fabScrollTop) {
+            fabScrollTop.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                fabContainer.classList.remove('active');
+            });
+        }
+    </script>
 </body>
 </html>
