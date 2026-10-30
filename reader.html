@@ -339,5 +339,55 @@
             });
         });
     </script>
+
+        // Floating Action Button (FAB) Logic
+        const fabContainer = document.createElement('div');
+        fabContainer.className = 'fab-container';
+        fabContainer.innerHTML = `
+            <div id="fabMenu" class="fab-menu">
+                <button id="fabThemeToggle" class="fab-menu-item">
+                    <span>🌓</span> Mode Terang/Gelap
+                </button>
+                <button id="fabScrollTop" class="fab-menu-item">
+                    <span>⬆️</span> Ke Atas
+                </button>
+            </div>
+            <button id="fabMainBtn" class="fab-btn" title="Menu Cepat">
+                ⚙️
+            </button>
+        `;
+        document.body.appendChild(fabContainer);
+
+        const fabMainBtn = document.getElementById('fabMainBtn');
+        const fabThemeToggle = document.getElementById('fabThemeToggle');
+        const fabScrollTop = document.getElementById('fabScrollTop');
+
+        fabMainBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            fabContainer.classList.toggle('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!fabContainer.contains(e.target)) {
+                fabContainer.classList.remove('active');
+            }
+        });
+
+        fabThemeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            const themeToggleBtn = document.getElementById('themeToggle');
+            if (themeToggleBtn) {
+                themeToggleBtn.textContent = isLight ? '☀️' : '🌙';
+            }
+            fabContainer.classList.remove('active');
+        });
+
+        fabScrollTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            fabContainer.classList.remove('active');
+        });
+
 </body>
 </html>
