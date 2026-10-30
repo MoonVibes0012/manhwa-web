@@ -1022,13 +1022,13 @@ body.reader-body.light-mode {
     transform: translateY(-2px);
 }
 
-
 /* Scroll Reveal Animation */
 .reveal-card {
     opacity: 0;
     transform: translateY(30px);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
+
 .reveal-card.revealed {
     opacity: 1;
     transform: translateY(0);
@@ -1041,19 +1041,38 @@ body.reader-body.light-mode {
 }
 
 .card-img-wrapper,
-.archive-card-img-wrapper {
+.archive-card-img-wrapper,
+.hero-img-wrapper {
+    position: relative;
     background: linear-gradient(90deg, #18181b 25%, #27272a 50%, #18181b 75%);
     background-size: 200% 100%;
     animation: skeletonShimmer 1.5s infinite;
 }
 
+body.light-mode .card-img-wrapper,
+body.light-mode .archive-card-img-wrapper,
+body.light-mode .hero-img-wrapper {
+    background: linear-gradient(90deg, #e4e4e7 25%, #f4f4f5 50%, #e4e4e7 75%);
+    background-size: 200% 100%;
+    animation: skeletonShimmer 1.5s infinite;
+}
+
+.card-img-wrapper.loaded,
+.archive-card-img-wrapper.loaded,
+.hero-img-wrapper.loaded {
+    animation: none;
+    background: transparent;
+}
+
 .card-img-wrapper img,
-.archive-card-img-wrapper img {
+.archive-card-img-wrapper img,
+.hero-img-wrapper img {
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
 }
 
 .card-img-wrapper img.loaded,
-.archive-card-img-wrapper img.loaded {
+.archive-card-img-wrapper img.loaded,
+.hero-img-wrapper img.loaded {
     opacity: 1;
 }
