@@ -116,7 +116,8 @@
             .then(chapters => {
                 const maxId = Math.max(...chapters.map(c => c.id));
                 const grid = document.getElementById('manhwaGrid');
-                grid.innerHTML = chapters.map(ch => {
+                grid.innerHTML = chapters.map
+                setTimeout(initCardEffects, 50);(ch => {
                     const isNew = (ch.id === maxId);
                     return `
                         <div class="manhwa-card" data-title="${ch.title.toLowerCase()} chapter ${ch.id}">
@@ -205,6 +206,60 @@
         fabScrollTop.addEventListener('click', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
             fabContainer.classList.remove('active');
+        });
+
+
+        // Scroll Reveal Animation & Skeleton Loading Handler
+        function initCardEffects() {
+            const observerOptions = { threshold: 0.1 };
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const cards = document.querySelectorAll('.manhwa-card, .archive-card');
+            cards.forEach(card => {
+                if (!card.classList.contains('reveal-card')) {
+                    card.classList.add('reveal-card');
+                    observer.observe(card);
+                }
+            });
+
+            const cardImages = document.querySelectorAll('.card-img-wrapper img, .archive-card-img-wrapper img');
+            cardImages.forEach(img => {
+                const wrapper = img.closest('.card-img-wrapper, .archive-card-img-wrapper');
+                if (img.complete) {
+                    img.classList.add('loaded');
+                    if (wrapper) {
+                        wrapper.style.animation = 'none';
+                        wrapper.style.background = 'transparent';
+                    }
+                } else {
+                    img.addEventListener('load', () => {
+                        img.classList.add('loaded');
+                        if (wrapper) {
+                            wrapper.style.animation = 'none';
+                            wrapper.style.background = 'transparent';
+                        }
+                    });
+                    img.addEventListener('error', () => {
+                        img.classList.add('loaded');
+                        if (wrapper) {
+                            wrapper.style.animation = 'none';
+                            wrapper.style.background = 'transparent';
+                        }
+                    });
+                }
+            });
+        }
+
+        // Run after DOM content loaded or when content updates
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(initCardEffects, 100);
         });
 
 </body>
