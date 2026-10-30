@@ -110,28 +110,33 @@
             container.style.display = 'block';
         }
 
-        // Fetch chapters.json and render dynamically all chapter cards for quick search & listing
+        // Fetch chapters.json and render dynamically all chapter cards with "NEW" badge on highest chapter ID
         fetch('chapters.json')
             .then(res => res.json())
             .then(chapters => {
+                const maxId = Math.max(...chapters.map(c => c.id));
                 const grid = document.getElementById('manhwaGrid');
-                grid.innerHTML = chapters.map(ch => `
-                    <div class="manhwa-card" data-title="${ch.title.toLowerCase()} chapter ${ch.id}">
-                        <div class="card-img-wrapper">
-                            <img src="images/chapter-1/01.jpg" alt="Chapter ${ch.id}" loading="lazy">
-                            <span class="genre-badge">${ch.genre || 'Action'}</span>
-                        </div>
-                        <div class="card-content">
-                            <div>
-                                <h3 class="card-title">Chapter ${ch.id}: ${ch.title}</h3>
-                                <p class="card-desc">Baca chapter ${ch.id} dari seri Chronicles of the Shadow dengan kualitas terbaik.</p>
+                grid.innerHTML = chapters.map(ch => {
+                    const isNew = (ch.id === maxId);
+                    return `
+                        <div class="manhwa-card" data-title="${ch.title.toLowerCase()} chapter ${ch.id}">
+                            <div class="card-img-wrapper">
+                                <img src="images/chapter-1/01.jpg" alt="Chapter ${ch.id}" loading="lazy">
+                                ${isNew ? '<span class="new-badge">NEW</span>' : ''}
+                                <span class="genre-badge">${ch.genre || 'Action'}</span>
                             </div>
-                            <div class="card-actions">
-                                <a href="${ch.link}" class="btn-read">Baca Chapter</a>
+                            <div class="card-content">
+                                <div>
+                                    <h3 class="card-title">Chapter ${ch.id}: ${ch.title}</h3>
+                                    <p class="card-desc">Baca chapter ${ch.id} dari seri Chronicles of the Shadow dengan kualitas terbaik.</p>
+                                </div>
+                                <div class="card-actions">
+                                    <a href="${ch.link}" class="btn-read">Baca Chapter</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                `).join('');
+                    `;
+                }).join('');
 
                 // Quick Search Functionality
                 const homeSearch = document.getElementById('homeSearch');

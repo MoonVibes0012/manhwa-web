@@ -36,6 +36,10 @@
     </div>
 
     <div class="reader-container normal" id="manhwaContainer">
+        <div class="reader-header-info" style="text-align: center; padding: 25px 0 15px 0;">
+            <h1 id="chapterTitleHeading" style="font-size: 1.5rem; font-weight: 700; margin: 0 0 8px 0; color: var(--text-main); font-family: 'Montserrat', sans-serif;">Chapter 1</h1>
+            <span id="reading-time" style="font-size: 0.85rem; color: var(--text-muted); font-family: 'Inter', sans-serif;">Estimasi baca: ... menit</span>
+        </div>
         <img src="images/chapter-1/01.jpg" alt="Page 1" class="manhwa-page" loading="lazy">
         <img src="images/chapter-1/02.jpg" alt="Page 2" class="manhwa-page" loading="lazy">
         <img src="images/chapter-1/03.jpg" alt="Page 3" class="manhwa-page" loading="lazy">
@@ -103,6 +107,8 @@
         document.title = 'Chapter ' + chNum + ' - Perpustakaan Manhwa';
 
         // Fetch chapters.json to populate chapter dropdown and setup nav
+        
+        // Fetch chapters.json to populate chapter dropdown and setup nav
         fetch('chapters.json')
             .then(res => res.json())
             .then(chapters => {
@@ -111,11 +117,29 @@
                     <option value="${ch.id}" ${ch.id === chNum ? 'selected' : ''}>Chapter ${ch.id}: ${ch.title}</option>
                 `).join('');
 
+                const currentChObj = chapters.find(ch => ch.id === chNum);
+                const titleHeading = document.getElementById('chapterTitleHeading');
+                if (titleHeading && currentChObj) {
+                    titleHeading.textContent = `Chapter ${currentChObj.id}: ${currentChObj.title}`;
+                } else if (titleHeading) {
+                    titleHeading.textContent = `Chapter ${chNum}`;
+                }
+
                 dropdown.addEventListener('change', (e) => {
                     window.location.href = 'reader.html?chapter=' + e.target.value;
                 });
+
+                // Calculate Reading Time Estimate based on number of <img> tags (* 15 seconds)
+                const imgCount = document.querySelectorAll('#manhwaContainer img').length;
+                const totalSeconds = imgCount * 15;
+                const readingMinutes = Math.max(1, Math.round(totalSeconds / 60));
+                const readingTimeEl = document.getElementById('reading-time');
+                if (readingTimeEl) {
+                    readingTimeEl.textContent = `Estimasi baca: ${readingMinutes} menit`;
+                }
             })
             .catch(err => console.error('Failed to load chapters in reader', err));
+
 
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
