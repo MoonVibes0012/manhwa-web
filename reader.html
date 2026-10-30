@@ -44,6 +44,14 @@
         <img src="images/chapter-1/02.jpg" alt="Page 2" class="manhwa-page" loading="lazy">
         <img src="images/chapter-1/03.jpg" alt="Page 3" class="manhwa-page" loading="lazy">
         
+        
+        <!-- Elegant End of Chapter Box -->
+        <div class="elegant-end-box">
+            <h3>Terima kasih sudah membaca!</h3>
+            <p id="endChapterText">Kamu telah mencapai akhir Chapter 1</p>
+            <a href="#" id="endNextBtn" class="btn-read elegant-next-btn">Lanjut ke Chapter Berikutnya ➡️</a>
+        </div>
+
         <div class="chapter-navigation">
             <a href="#" class="btn-chapter prev-chapter" id="prevBtn">⬅️ Prev</a>
             <button class="btn-chapter share-chapter" id="shareBtn">Bagikan 🔗</button>
@@ -125,6 +133,16 @@
                     titleHeading.textContent = `Chapter ${chNum}`;
                 }
 
+                
+                const endChapterText = document.getElementById('endChapterText');
+                const endNextBtn = document.getElementById('endNextBtn');
+                if (endChapterText) {
+                    endChapterText.textContent = `Kamu telah mencapai akhir Chapter ${chNum}`;
+                }
+                if (endNextBtn) {
+                    endNextBtn.href = nextUrl;
+                }
+    
                 dropdown.addEventListener('change', (e) => {
                     window.location.href = 'reader.html?chapter=' + e.target.value;
                 });

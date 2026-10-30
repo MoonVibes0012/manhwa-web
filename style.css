@@ -975,3 +975,49 @@ body.reader-body.light-mode {
     background-color: rgba(255, 87, 34, 0.15);
     color: var(--accent);
 }
+
+
+/* Elegant End of Chapter Box */
+.elegant-end-box {
+    background: linear-gradient(135deg, var(--bg-card), #18181b);
+    border: 2px solid transparent;
+    border-image: linear-gradient(135deg, var(--accent), #ff9800) 1;
+    border-radius: 16px;
+    padding: 35px 25px;
+    margin: 40px 20px 20px 20px;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(255, 87, 34, 0.15);
+}
+
+.elegant-end-box h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0 0 10px 0;
+}
+
+.elegant-end-box p {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    color: var(--text-muted);
+    margin: 0 0 20px 0;
+}
+
+.elegant-next-btn {
+    display: inline-block;
+    padding: 14px 28px;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 30px;
+    background-color: var(--accent);
+    color: #ffffff !important;
+    text-decoration: none !important;
+    box-shadow: 0 4px 15px rgba(255, 87, 34, 0.4);
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.elegant-next-btn:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-2px);
+}
