@@ -144,7 +144,7 @@
                 const dropdown = document.getElementById('chapterDropdown');
                 if (dropdown) {
                     dropdown.innerHTML = chapters.map(ch => `
-                        <option value="${ch.id}" ${ch.id === chNum ? 'selected' : ''}>Chapter ${ch.id}: ${ch.title}</option>
+                        <option value="${ch.id}" ${ch.id === chNum ? 'selected' : ''}>Chapter ${ch.id}: ${(ch.judul || ch.title)}</option>
                     `).join('');
 
                     dropdown.addEventListener('change', (e) => {

@@ -1,37 +1,32 @@
 [
   {
-    "id": 5,
-    "title": "Pertempuran Akhir",
-    "genre": "Action",
-    "date": "Terbaru",
-    "link": "reader.html?chapter=5"
-  },
-  {
-    "id": 4,
-    "title": "Kebangkitan Kekuatan",
-    "genre": "Fantasy",
-    "date": "2 hari lalu",
-    "link": "reader.html?chapter=4"
-  },
-  {
-    "id": 3,
-    "title": "Sekutu Baru",
-    "genre": "Adventure",
-    "date": "5 hari lalu",
-    "link": "reader.html?chapter=3"
+    "id": 1,
+    "judul": "Awal Perjalanan",
+    "link": "reader.html?chapter=1",
+    "genre": "Action"
   },
   {
     "id": 2,
-    "title": "Jejak Misterius",
-    "genre": "Fantasy",
-    "date": "1 minggu lalu",
-    "link": "reader.html?chapter=2"
+    "judul": "Bayangan Masa Lalu",
+    "link": "reader.html?chapter=2",
+    "genre": "Fantasy"
   },
   {
-    "id": 1,
-    "title": "Awal Perjalanan",
-    "genre": "Action",
-    "date": "2 minggu lalu",
-    "link": "reader.html?chapter=1"
+    "id": 3,
+    "judul": "Pertarungan Pertama",
+    "link": "reader.html?chapter=3",
+    "genre": "Action"
+  },
+  {
+    "id": 4,
+    "judul": "Gerbang Dunia Lain",
+    "link": "reader.html?chapter=4",
+    "genre": "Fantasy"
+  },
+  {
+    "id": 5,
+    "judul": "Kekuatan yang Terbangun",
+    "link": "reader.html?chapter=5",
+    "genre": "Action"
   }
 ]

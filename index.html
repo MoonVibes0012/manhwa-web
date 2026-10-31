@@ -163,7 +163,7 @@
                 grid.innerHTML = chapters.map(ch => {
                     const isNew = (ch.id === maxId);
                     return `
-                        <div class="manhwa-card" data-title="${ch.title.toLowerCase()} chapter ${ch.id}">
+                        <div class="manhwa-card" data-title="${(ch.judul || ch.title).toLowerCase()} chapter ${ch.id}">
                             <div class="card-img-wrapper">
                                 <img src="images/chapter-1/01.jpg" alt="Chapter ${ch.id}" loading="lazy">
                                 ${isNew ? '<span class="new-badge">NEW</span>' : ''}
@@ -171,7 +171,7 @@
                             </div>
                             <div class="card-content">
                                 <div>
-                                    <h3 class="card-title">Chapter ${ch.id}: ${ch.title}</h3>
+                                    <h3 class="card-title">Chapter ${ch.id}: ${(ch.judul || ch.title)}</h3>
                                     <p class="card-desc">Baca chapter ${ch.id} dari seri Chronicles of the Shadow dengan kualitas terbaik.</p>
                                 </div>
                                 <div class="card-actions">

@@ -141,7 +141,7 @@
                 chapterGrid.innerHTML = chapters.map(ch => {
                     const isNew = (ch.id === maxId);
                     return `
-                    <a href="${ch.link}" class="archive-card" data-genre="${ch.genre || 'Action'}" data-search="${ch.title.toLowerCase()} chapter ${ch.id} ${(ch.genre || '').toLowerCase()}">
+                    <a href="${ch.link}" class="archive-card" data-genre="${ch.genre || 'Action'}" data-search="${(ch.judul || ch.title).toLowerCase()} chapter ${ch.id} ${(ch.genre || '').toLowerCase()}">
                         <div class="archive-card-img-wrapper">
                             <img src="images/chapter-1/01.jpg" alt="Chapter ${ch.id}" class="archive-card-img" loading="lazy">
                             <span class="genre-badge">${ch.genre || 'Action'}</span>
@@ -149,7 +149,7 @@
                         </div>
                         <div class="archive-card-body">
                             <span class="archive-card-number">Chapter ${ch.id}</span>
-                            <span class="archive-card-title">${ch.title}</span>
+                            <span class="archive-card-title">${(ch.judul || ch.title)}</span>
                             <span class="archive-card-date">${ch.date}</span>
                         </div>
                     </a>
